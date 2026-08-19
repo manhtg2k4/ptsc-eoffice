@@ -1,0 +1,1 @@
+export const arrCongDanOrDoanhNghiep = ["CONG_DAN", "DOANH_NGHIEP"];

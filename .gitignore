@@ -1,0 +1,27 @@
+# Node dependencies
+**/node_modules/
+node_modules/
+
+# Environment files (Tránh lộ mật khẩu/secret lên Github)
+**/.env
+**/.env.local
+**/.env.*.local
+.env
+
+# Build outputs
+**/dist/
+**/build/
+dist/
+build/
+
+# Logs & temp
+**/logs/
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+**/tmp/
+**/upload/
+
+# OS files
+.DS_Store
+Thumbs.db

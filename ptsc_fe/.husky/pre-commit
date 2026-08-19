@@ -1,0 +1,25 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running ESLint before commit..."
+
+# Lấy danh sách file JavaScript/TypeScript đã thay đổi
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$')
+
+# Nếu không có file nào thay đổi, bỏ qua ESLint
+if [ -z "$FILES" ]; then
+  echo "✅ No JavaScript/TypeScript files changed. Skipping ESLint."
+  exit 0
+fi
+
+# Chạy ESLint trên danh sách file đã thay đổi
+npx eslint $FILES
+
+# Nếu ESLint phát hiện lỗi, chặn commit
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint errors detected! Commit aborted."
+  exit 1
+fi
+
+echo "✅ ESLint passed! Commit allowed."
+exit 0

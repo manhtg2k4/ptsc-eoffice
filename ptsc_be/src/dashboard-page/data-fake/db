@@ -1,0 +1,335 @@
+-- app_tancang.dbo.task definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.task;
+
+CREATE TABLE app_tancang.dbo.task (
+	id int IDENTITY(1,1) NOT NULL,
+	code varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	name nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	start_date datetime NULL,
+	end_date datetime NULL,
+	bpmn_id int NULL,
+	priority varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	reminder_time varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	topic varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	note nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	repetitive_task varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[month] nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	repetitive_start datetime NULL,
+	repetitive_end datetime NULL,
+	parent int NULL,
+	[path] nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	progress nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	process_status nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	status int NULL,
+	approval_status int NULL,
+	created_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	updated_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	update_at datetime DEFAULT getdate() NULL,
+	created_at datetime DEFAULT getdate() NULL,
+	recurring_from_id int NULL,
+	type_task varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	meeting_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	meeting_conclusion_id nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	week_days nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	project_id int NULL,
+	type_task_meeting nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	template_id nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	dependent_task_id int NULL,
+	CONSTRAINT PK__task__3213E83FF4F6660E PRIMARY KEY (id)
+);
+-- app_tancang.dbo.task_users definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.task_users;
+
+CREATE TABLE app_tancang.dbo.task_users (
+	id int IDENTITY(1,1) NOT NULL,
+	task_id int NULL,
+	process_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	process_name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[role] nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[type] int NULL,
+	update_at datetime DEFAULT getdate() NULL,
+	created_at datetime DEFAULT getdate() NULL,
+	CONSTRAINT PK_task_users PRIMARY KEY (id)
+);
+
+-- app_tancang.dbo.outgoing_documents definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.outgoing_documents;
+
+CREATE TABLE app_tancang.dbo.outgoing_documents (
+	id int IDENTITY(1,1) NOT NULL,
+	document_id varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	status_code varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT '1' NULL,
+	sender_unit varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	drafter varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	document_type varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	urgency_level varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	private_level varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	document_field varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	report_signer varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	report_document_symbol varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	to_book_text_symbols varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	viewers nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	deadline_reply datetime NULL,
+	abstract_note nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	recipient_ids nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	internal_receiving_unit nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	reply_incomming_doc varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime DEFAULT getdate() NULL,
+	updated_at datetime DEFAULT getdate() NULL,
+	draft_signer varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	book_document_id int NULL,
+	status int DEFAULT 1 NULL,
+	code_commanders nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	commanders nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	current_note nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	to_book int NULL,
+	release_no varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	release_date varchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	text_symbols varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_work_files nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_proposal nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_draft nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_attachments nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_recall nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_replacement nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	doc_answer nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	external_receiving_unit nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	internal_receiving_dept nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	processor nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	files nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	type_doc int DEFAULT 1 NULL,
+	bpmn_version varchar(24) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	vieweds nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	know_receivers nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	type_of_process nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	replaced_documents nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	internal_receiving_dept_old nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	from_create_draf bit NULL,
+	replaced bit DEFAULT 0 NOT NULL,
+	sign_type bit NULL,
+	CONSTRAINT PK_outgoing_documents PRIMARY KEY (id),
+	CONSTRAINT UQ_outgoing_documents_document_id UNIQUE (document_id)
+); 
+
+-- app_tancang.dbo.audit definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.audit;
+
+CREATE TABLE app_tancang.dbo.audit (
+	id bigint IDENTITY(1,1) NOT NULL,
+	document_id nvarchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[time] datetime DEFAULT getdate() NULL,
+	user_id nvarchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	display_name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[role] nvarchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	action_code nvarchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	from_node_id nvarchar(128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	to_node_id nvarchar(128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	details nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	origin_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	receiver nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	receiver_unit nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	group_ nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	roleProcess nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[action] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	deadline datetime NULL,
+	stage_status nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	curStatusCode nvarchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime DEFAULT getdate() NULL,
+	updated_at datetime DEFAULT getdate() NULL,
+	type_document varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	processed_by varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	acting_as varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__audit__3213E83F1D06EBF8 PRIMARY KEY (id)
+);
+
+-- app_tancang.dbo.incomming_documents definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.incomming_documents;
+
+CREATE TABLE app_tancang.dbo.incomming_documents (
+	document_id varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	status_code varchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime DEFAULT getdate() NULL,
+	updated_at datetime DEFAULT getdate() NULL,
+	book_document_id int NULL,
+	abstract_note nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	to_book varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	sender_unit varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	receiver_unit varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	document_date datetime2(0) DEFAULT getdate() NULL,
+	receive_date datetime2(0) DEFAULT getdate() NULL,
+	to_book_date datetime2(0) NULL,
+	deadline datetime2 NULL,
+	second_book varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	receive_method varchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	private_level varchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	urgency_level varchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	document_type varchar(128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	document_field varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	signer nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	to_book_code varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	fileids nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	status int DEFAULT 1 NULL,
+	isStar bit DEFAULT 0 NULL,
+	parent_doc varchar(64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	type_process_doc varchar(32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	bpmn_version varchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	copy_to_internal varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	resolution_deadline datetime NULL,
+	copy_count int NULL,
+	page_count int NULL,
+	view_group varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	directive_comment varchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK_incomming_documents PRIMARY KEY (document_id)
+);
+-- app_tancang.dbo.passport_borrow_requests definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.passport_borrow_requests;
+
+CREATE TABLE app_tancang.dbo.passport_borrow_requests (
+	id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT newid() NOT NULL,
+	request_code nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	type_request nvarchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT N'user' NOT NULL,
+	requester_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	name_passport_request nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	leader nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	passport_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	passport_number nvarchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	passport_type nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	reason nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	borrow_date date NOT NULL,
+	return_date date NULL,
+	delegation_leader nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[position] nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	destination nvarchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_specific_departure_date bit DEFAULT 0 NOT NULL,
+	departure_date datetime2 NULL,
+	arrival_date datetime2 NULL,
+	partner nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	trip_content nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	decision nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	note nvarchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	passport_file nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	list_of_organizations nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	status nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT N'Chờ phê duyệt' NOT NULL,
+	handler_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	reject_reason nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	cancel_reason nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	process_instance_id nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_deleted bit DEFAULT 0 NOT NULL,
+	created_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime2 DEFAULT getdate() NOT NULL,
+	updated_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	updated_at datetime2 DEFAULT getdate() NOT NULL,
+	approval_reason nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__passport__3213E83F6E6C481C PRIMARY KEY (id),
+	CONSTRAINT UQ_passport_borrow_requests_code UNIQUE (request_code),
+	CONSTRAINT FK_pbr_passport FOREIGN KEY (passport_id) REFERENCES app_tancang.dbo.passports(id),
+	CONSTRAINT FK_pbr_requester FOREIGN KEY (requester_id) REFERENCES app_tancang.dbo.users(id)
+);
+
+-- app_tancang.dbo.vehicle_registrations definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.vehicle_registrations;
+
+CREATE TABLE app_tancang.dbo.vehicle_registrations (
+	id uniqueidentifier DEFAULT newid() NOT NULL,
+	name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	request_type nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	priority nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	is_important_guest nvarchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	passenger_count int NOT NULL,
+	departure_time datetime2 NOT NULL,
+	return_time datetime2 NOT NULL,
+	departure_point nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	destination nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	contact_person nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	contact_phone nvarchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	total_people int NULL,
+	purpose nvarchar(1000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	notes nvarchar(1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	status int DEFAULT 1 NOT NULL,
+	bpmn_version nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	timezone nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT N'Asia/Ho_Chi_Minh' NOT NULL,
+	vehicle_state nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT N'CHUA_TRINH' NOT NULL,
+	status_code nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	request_submitted_at datetime2 NULL,
+	waiting_confirmed_at datetime2 NULL,
+	created_at datetime2 DEFAULT sysdatetime() NOT NULL,
+	updated_at datetime2 DEFAULT sysdatetime() NOT NULL,
+	created_by nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	department nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	trip_duration_minutes int NULL,
+	driver_ids nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	car_ids nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	coordination_information nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	rejection_reason nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	confirmed_driver_ids nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_all_drivers_confirmed bit DEFAULT 0 NOT NULL,
+	driver_notice_count int DEFAULT 0 NULL,
+	leader_notice_count int DEFAULT 0 NULL,
+	request_code nvarchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK_vehicle_registrations PRIMARY KEY (id)
+);
+
+-- app_tancang.dbo.feature_management definition
+
+-- Drop table
+
+-- DROP TABLE app_tancang.dbo.feature_management;
+
+CREATE TABLE app_tancang.dbo.feature_management (
+	id nvarchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	code nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	form_code nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_follow_assignee bit DEFAULT 0 NOT NULL,
+	is_authorized bit DEFAULT 0 NOT NULL,
+	is_count bit DEFAULT 0 NOT NULL,
+	authorized_function nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	criteria nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	parent_id nvarchar(36) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	url nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	api_url nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	process_id nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	status_feature char(1) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT '1' NOT NULL,
+	description nvarchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	fields nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	value_field nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	updated_by nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	feature_type nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT 'list' NOT NULL,
+	status int DEFAULT 1 NOT NULL,
+	created_at datetime2 DEFAULT sysutcdatetime() NOT NULL,
+	updated_at datetime2 DEFAULT sysutcdatetime() NOT NULL,
+	mpath nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_parent_child bit NULL,
+	custom_component varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_inherit_sub_tab bit DEFAULT 0 NOT NULL,
+	inherit_sub_tab_function nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	types nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_hide_title bit DEFAULT 0 NULL,
+	count_list json NULL,
+	CONSTRAINT PK_feature_management PRIMARY KEY (id),
+	CONSTRAINT UQ_feature_management_code UNIQUE (code)
+);

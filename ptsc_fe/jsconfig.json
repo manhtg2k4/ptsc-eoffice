@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@component/*": ["builder-form-export/components/*"],
+      "@pages/*": ["pages/*"],
+      "@assets/*": ["assets/*"],
+      "@utils/*": ["utils/*"],
+      "@config/*": ["config/*"],
+      "@styles/*": ["styles/*"],
+      "@layouts/*": ["layouts/*"],
+      "@layout/*": ["builder-form-export/Layouts/*"],
+      "@redux/*": ["redux/*"],
+      "@routers/*": ["routers/*"],
+      "@EnvironmentFile/*": ["EnvironmentFile/*"],
+      "@hooks/*": ["hooks/*"],
+			"@services/*": ["services/*"],
+			"@AuthContext/*": ["AuthContext/*"],
+      
+      "@builder-form/*": ["builder-form/*"],
+      "@builder-popup/*": ["builder-popup/*"],
+      "@builder-form-export/*": ["builder-form-export/*"],
+      "@builder-table/*":["builder-table/*"],
+      "@helper/*": ["helper/*"],
+      "@variable/*": ["variable/*"],
+			"@/*": ["*"]
+    }
+  },
+  "include": ["src"]
+}

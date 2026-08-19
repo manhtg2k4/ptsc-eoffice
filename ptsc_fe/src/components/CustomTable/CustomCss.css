@@ -1,0 +1,67 @@
+.css-1fny7mx {
+  padding: 0px 0px 0px 25px !important;
+  /* height: 10px; */
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: inherit;
+  color: inherit;
+  z-index: 10;
+}
+
+.custom-table-tree-virtual-list-wrapper {
+  width: 100%;
+  height: 580px;
+}
+
+/* Hide scrollbar but keep scrolling enabled */
+.custom-table-tree-virtual-list-wrapper,
+.custom-table-tree-virtual-list-wrapper > div {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scrollbar-gutter: auto;
+}
+
+.custom-table-tree-virtual-list-wrapper::-webkit-scrollbar,
+.custom-table-tree-virtual-list-wrapper > div::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.custom-table-tree-virtual-list-wrapper.auto-height {
+  height: 320px;
+}
+
+@media (max-width: 600px) {
+  .custom-table-tree-virtual-list-wrapper {
+    height: 280px;
+  }
+
+  .custom-table-tree-virtual-list-wrapper.auto-height {
+    height: 240px;
+  }
+}
+
+.custom-table-tree-virtual-list {
+  width: 100%;
+  height: 100%;
+}
+
+.custom-table-tree-virtual-row-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* pm-sticky-col: class marker, không còn dùng CSS transform (đã chuyển sang position:sticky thuần CSS) */
+
+/* EllipsisCell: cascade ellipsis to direct block-level children (e.g. styled spans/divs returned by column accessors) */
+.ellipsis-cell-wrap > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}

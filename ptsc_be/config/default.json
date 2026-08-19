@@ -1,0 +1,13 @@
+{
+    "local": {
+        "jwtSecret": "0a6b944d-d2fb-46fc-a85e-0295c986cd9f"
+    },
+    "lifesso": {
+      "userUrl": "https://lifesso.lifetex.vn:9445/oauth2/userinfo",
+      "scim2Url": "https://lifesso.lifetex.vn:9445/scim2/Users"
+    },
+    "jwt": {
+        "expiresIn": "25200"
+    }
+  }
+  

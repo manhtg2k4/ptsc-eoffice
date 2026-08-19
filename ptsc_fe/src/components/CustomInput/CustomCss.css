@@ -1,0 +1,68 @@
+.css-1fny7mx {
+  padding: 0px 0px 0px 25px !important;
+  /* height: 10px; */
+}
+
+.tree ul {
+  padding-left: 15px;
+  list-style-type: none;
+  position: relative;
+}
+
+ .tree li {
+  margin: 0;
+  padding: 10px 5px 0 5px;
+  position: relative;
+}
+
+.tree li::before,
+.tree li::after {
+  content: '';
+  position: absolute;
+  left: 0px; /* Đặt gần sát icon */
+}
+
+.tree li::before, .tree li::after {
+  content: '';
+  position: absolute;
+  left: -20px;
+}
+
+.tree li::before {
+  border-left: 2px solid #ccc;
+  top: 0;
+  bottom: 50px;
+  height: 100%;
+}
+
+.tree li::after {
+  border-top: 2px solid #ccc;
+  top: 15px;
+  width: 25px;
+  height: 20px;
+}
+
+.tree li span {
+  cursor: pointer;
+}
+
+.tree li:last-child::before {
+  height: 15px;
+}
+.tree li span {
+  cursor: pointer;
+  display: flex;             /* Cho phép icon và text nằm cùng hàng */
+  align-items: center;       /* Căn giữa theo chiều dọc */
+  gap: 5px;                  /* Khoảng cách giữa icon và text */
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Khoảng cách giữa icon và text */
+  
+  cursor: pointer;
+  /* width: 100%; */
+}
+ 
+ 

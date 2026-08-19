@@ -1,0 +1,125 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  background-color: white !important;
+}
+.bjs-powered-by {
+  display: none !important;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+.app-header {
+  background: #0062AD;
+  color: #fff;
+  padding: 12px 20px;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+.container {
+  display: flex;
+  height: calc(100vh - 48px);
+}
+.sidebar {
+  width: 220px;
+  background: #f4f4f4;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
+.sidebar h3 {
+  margin-top: 0;
+}
+.sidebar .draggable {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  margin-bottom: 6px;
+  cursor: grab;
+  user-select: none;
+}
+.canvas {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.canvas-placeholder {
+  color: #bbb;
+  font-style: italic;
+}
+.form-element {
+  margin-bottom: 12px;
+}
+.form-element label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+.tabs {
+  display: flex;
+  gap: 10px;
+}
+.tabs button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+.tabs button.active {
+  background: #0062AD;
+  color: #fff;
+}
+
+.form-row-layout {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border: 1px dashed #aaa;
+  background: #fdfdfd;
+  margin-bottom: 16px;
+  min-height: 60px;
+}
+
+.form-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  border: 1px dashed #aaa;
+  background: #fdfdfd;
+  margin-bottom: 16px;
+  min-height: 60px;
+}
+.form-grid3-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  border: 1px dashed #aaa;
+  background: #fdfdfd;
+  margin-bottom: 16px;
+  min-height: 80px;
+}
+.editable-label {
+  border: none;
+  font-weight: bold;
+  margin-bottom: 4px;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .form-row-layout,
+  .form-column-layout {
+    flex-direction: column;
+  }
+  .form-grid3-layout {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  }
+}

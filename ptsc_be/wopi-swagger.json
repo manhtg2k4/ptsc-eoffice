@@ -1,0 +1,5428 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/files/collabora/config/{fileId}": {
+      "get": {
+        "operationId": "FilesManagementController_getCollaboraConfig",
+        "parameters": [
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "description": "ID của tệp",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mode",
+            "required": false,
+            "in": "query",
+            "description": "Chế độ mở (chỉnh sửa hoặc xem)",
+            "schema": {
+              "enum": [
+                "edit",
+                "view"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "required": false,
+            "in": "query",
+            "description": "Tên tệp hiển thị",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_token",
+            "required": false,
+            "in": "query",
+            "description": "Token truy cập (nếu không gửi qua Header Authorization)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cấu hình Document được tạo thành công"
+          }
+        },
+        "summary": "Lấy cấu hình tích hợp Document Online",
+        "tags": [
+          "Files Management",
+          "WOPI"
+        ]
+      }
+    },
+    "/wopi/files/{id}": {
+      "get": {
+        "operationId": "WopiController_checkFileInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID của tệp",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_token",
+            "required": true,
+            "in": "query",
+            "description": "Token truy cập WOPI",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lấy thông tin tệp thành công"
+          }
+        },
+        "summary": "Lấy thông tin tệp (CheckFileInfo)",
+        "tags": [
+          "WOPI"
+        ]
+      },
+      "post": {
+        "operationId": "WopiController_fileOperation",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID của tệp",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_token",
+            "required": true,
+            "in": "query",
+            "description": "Token truy cập WOPI",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-wopi-override",
+            "required": true,
+            "in": "header",
+            "description": "Thao tác WOPI (LOCK, UNLOCK, REFRESH_LOCK)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thao tác thành công"
+          }
+        },
+        "summary": "Các thao tác với tệp (Khóa/Mở khóa/Làm mới khóa)",
+        "tags": [
+          "WOPI"
+        ]
+      }
+    },
+    "/wopi/files/{id}/contents": {
+      "get": {
+        "operationId": "WopiController_getFile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID của tệp",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_token",
+            "required": true,
+            "in": "query",
+            "description": "Token truy cập WOPI",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Nội dung tệp"
+          }
+        },
+        "summary": "Tải nội dung tệp (GetFile)",
+        "tags": [
+          "WOPI"
+        ]
+      },
+      "post": {
+        "operationId": "WopiController_putFile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID của tệp",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_token",
+            "required": true,
+            "in": "query",
+            "description": "Token truy cập WOPI",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "required": true,
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-wopi-override",
+            "required": true,
+            "in": "header",
+            "description": "Thao tác (phải là PUT)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-wopi-lock",
+            "required": false,
+            "in": "header",
+            "description": "ID khóa (Lock ID)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lưu tệp thành công"
+          }
+        },
+        "summary": "Cập nhật nội dung tệp (PutFile)",
+        "tags": [
+          "WOPI"
+        ]
+      }
+    },
+    "/hosting/discovery": {
+      "get": {
+        "description": "Endpoint này do Document Server quản lý để thông báo các định dạng tệp hỗ trợ và URL tương ứng.",
+        "operationId": "CollaboraExternalController_getDiscovery",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Trả về nội dung XML cấu hình."
+          }
+        },
+        "summary": "Lấy file cấu hình Discovery (XML) từ Document Server",
+        "tags": [
+          "WOPI"
+        ]
+      }
+    },
+    "/loleaflet/dist/loleaflet.html": {
+      "get": {
+        "description": "Trang HTML chính để nhúng trình soạn thảo tài liệu Document Online.",
+        "operationId": "CollaboraExternalController_getLoleaflet",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Giao diện người dùng Document (HTML)."
+          }
+        },
+        "summary": "Giao diện soạn thảo Document Online (loleaflet)",
+        "tags": [
+          "WOPI"
+        ]
+      }
+    },
+    "/browser": {
+      "get": {
+        "description": "Chứa các file JavaScript, CSS và assets cần thiết cho trình soạn thảo Document.",
+        "operationId": "CollaboraExternalController_getBrowser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Tài nguyên browser của Document."
+          }
+        },
+        "summary": "Đường dẫn tài nguyên Browser của Document",
+        "tags": [
+          "WOPI"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "WOPI & Document API",
+    "description": "Tài liệu hướng dẫn API cho tích hợp WOPI và Document Online",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "TaskUserDto": {
+        "type": "object",
+        "properties": {
+          "processId": {
+            "type": "string",
+            "description": "ID người dùng / phòng ban",
+            "example": "user-guid-or-org-guid"
+          },
+          "processName": {
+            "type": "string",
+            "description": "Tên người dùng / phòng ban",
+            "example": "Nguyễn Văn A"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "assigner",
+              "director",
+              "supporter",
+              "viewer"
+            ],
+            "description": "Vai trò (assigner, director, supporter, viewer)",
+            "example": "director"
+          },
+          "type": {
+            "type": "number",
+            "enum": [
+              1,
+              2
+            ],
+            "description": "Loại (1: cá nhân, 2: phòng ban)",
+            "example": 1
+          }
+        },
+        "required": [
+          "processId",
+          "processName",
+          "role",
+          "type"
+        ]
+      },
+      "CreateTaskDto": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "number",
+            "description": "ID công việc gốc (nếu tạo từ công việc)",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Tên công việc",
+            "example": "Hoàn thành báo cáo quý 4"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày bắt đầu",
+            "example": "2024-10-01T00:00:00.000Z"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Hạn xử lý",
+            "example": "2024-10-31T23:59:59.000Z"
+          },
+          "recurringEndDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày kết thúc lặp",
+            "example": "2024-10-31T23:59:59.000Z"
+          },
+          "bpmnId": {
+            "type": "string",
+            "description": "ID Quy trình (BPMN)",
+            "example": "1"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Độ ưu tiên",
+            "example": "gap"
+          },
+          "reminderTime": {
+            "type": "string",
+            "description": "Thời gian nhắc hạn",
+            "example": "1d"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Chủ đề",
+            "example": "Báo cáo"
+          },
+          "note": {
+            "type": "string",
+            "description": "Mô tả",
+            "example": "Chi tiết công việc..."
+          },
+          "repetitiveTask": {
+            "type": "string",
+            "description": "Công việc lặp lại (daily, weekly, monthly, quarterly)",
+            "example": "monthly"
+          },
+          "month": {
+            "type": "string",
+            "description": "Chọn tháng lặp trong quý (1,2,3 cho quý)",
+            "example": "1,2,3"
+          },
+          "daysOfWeek": {
+            "type": "string",
+            "description": "Chọn các thứ trong tuần (0=CN, 1=T2, ..., 6=T7)",
+            "example": "1,3,5"
+          },
+          "repetitiveStart": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày bắt đầu lặp (dùng để lấy ngày trong tháng/quý)"
+          },
+          "repetitiveEnd": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Lặp đến ngày"
+          },
+          "executionType": {
+            "type": "string",
+            "description": "Loại ngày lặp trong tháng: specific_day, relative_day, last_day",
+            "example": "specific_day"
+          },
+          "relativeWeek": {
+            "type": "string",
+            "description": "Tuần tương đối trong tháng: first, second, third, fourth, last",
+            "example": "first"
+          },
+          "relativeDay": {
+            "type": "number",
+            "description": "Ngày trong tuần cho tuần tương đối (0=CN, 1=T2,... 6=T7)",
+            "example": 1
+          },
+          "dayOfMonth": {
+            "type": "number",
+            "description": "Ngày cụ thể trong tháng (1-31)",
+            "example": 15
+          },
+          "weekDays": {
+            "type": "string",
+            "description": "Ngày cụ thể trong tháng (1-31)",
+            "example": 15
+          },
+          "monthInQuarter": {
+            "type": "number",
+            "description": "Tháng trong quý (1, 2, 3)",
+            "example": 1
+          },
+          "durationDays": {
+            "type": "number",
+            "description": "Số ngày thực hiện công việc",
+            "example": 2
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Giờ lặp (HH:mm)",
+            "example": "09:00"
+          },
+          "path": {
+            "type": "string",
+            "description": "Thể hiện quan hệ cha con (ID cha)",
+            "example": "123"
+          },
+          "pauseReason": {
+            "type": "string",
+            "description": "Lý do tạm dừng",
+            "example": "Nghỉ phép"
+          },
+          "pauseStartDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày bắt đầu tạm dừng"
+          },
+          "pauseEndDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày kết thúc tạm dừng"
+          },
+          "pauseIndefinitely": {
+            "type": "boolean",
+            "description": "Tạm dừng vô thời hạn"
+          },
+          "progress": {
+            "type": "string",
+            "description": "Tiến độ",
+            "example": "50"
+          },
+          "status": {
+            "type": "number",
+            "description": "Trạng thái (1: active, 0: deleted)",
+            "example": 1
+          },
+          "parent": {
+            "type": "number",
+            "description": "Thể hiện cha con",
+            "example": 1
+          },
+          "recurringFromId": {
+            "type": "number",
+            "description": "Thể hiện cha con với cv lặp lại",
+            "example": 1
+          },
+          "docId": {
+            "type": "string",
+            "description": "ID tài liệu (văn bản - truyền vào nếu tạo công việc từ văn bản)",
+            "example": "1767954403052"
+          },
+          "meetingId": {
+            "type": "string",
+            "description": "ID tài liệu (cuộc họp - truyền vào nếu tạo công việc từ cuộc họp)",
+            "example": "C2A3C22E-74A7-4D79-8856-01E8570790DE"
+          },
+          "meetingConclusionId": {
+            "type": "string",
+            "description": "ID kết luận cuộc họp (cuộc họp - truyền vào nếu tạo công việc từ cuộc họp)",
+            "example": "C2A3C22E-74A7-4D79-8856-01E8570790DE"
+          },
+          "typeTaskMeeting": {
+            "type": "string",
+            "description": "Loại task cuộc họp (meeting: từ cuộc họp, conclusion: từ kết luận cuộc họp)",
+            "example": "meeting"
+          },
+          "projectId": {
+            "type": "number",
+            "description": "ID dự án (truyền vào nếu tạo công việc từ dự án)",
+            "example": 1
+          },
+          "processStatus": {
+            "type": "string",
+            "description": "Trạng thái xử lý",
+            "example": "1",
+            "default": "1"
+          },
+          "assigners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "directors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "supporters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "viewers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "templateId": {
+            "type": "string",
+            "description": "ID Quy trình mẫu (Template)",
+            "example": "uuid"
+          },
+          "bypassTemplateTimeValidation": {
+            "type": "boolean",
+            "description": "Bỏ qua validate thời gian quy trình mẫu",
+            "example": false
+          },
+          "dependentTaskId": {
+            "type": "number",
+            "description": "ID công việc phụ thuộc",
+            "example": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "SendApprovalDto": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "number",
+            "description": "ID công việc"
+          },
+          "actionCode": {
+            "type": "string",
+            "description": "Mã hành động (VD: GUI_PHE_DUYET)"
+          },
+          "note": {
+            "type": "string",
+            "description": "Ghi chú phê duyệt"
+          },
+          "files": {
+            "description": "Danh sách ID file đính kèm",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assigneeUserId": {
+            "type": "string",
+            "description": "Người được giao xử lý tiếp theo (nếu có)"
+          }
+        },
+        "required": [
+          "taskId",
+          "actionCode"
+        ]
+      },
+      "UpdateTaskStatusDto": {
+        "type": "object",
+        "properties": {
+          "processStatus": {
+            "type": "string",
+            "description": "Trạng thái mới của công việc (vd: 1 = hoạt động, 0 = vô hiệu)",
+            "example": "processing"
+          }
+        },
+        "required": [
+          "processStatus"
+        ]
+      },
+      "UpdateTaskDto": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "number",
+            "description": "ID công việc gốc (nếu tạo từ công việc)",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Tên công việc",
+            "example": "Hoàn thành báo cáo quý 4"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày bắt đầu",
+            "example": "2024-10-01T00:00:00.000Z"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Hạn xử lý",
+            "example": "2024-10-31T23:59:59.000Z"
+          },
+          "recurringEndDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày kết thúc lặp",
+            "example": "2024-10-31T23:59:59.000Z"
+          },
+          "bpmnId": {
+            "type": "string",
+            "description": "ID Quy trình (BPMN)",
+            "example": "1"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Độ ưu tiên",
+            "example": "gap"
+          },
+          "reminderTime": {
+            "type": "string",
+            "description": "Thời gian nhắc hạn",
+            "example": "1d"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Chủ đề",
+            "example": "Báo cáo"
+          },
+          "note": {
+            "type": "string",
+            "description": "Mô tả",
+            "example": "Chi tiết công việc..."
+          },
+          "repetitiveTask": {
+            "type": "string",
+            "description": "Công việc lặp lại (daily, weekly, monthly, quarterly)",
+            "example": "monthly"
+          },
+          "month": {
+            "type": "string",
+            "description": "Chọn tháng lặp trong quý (1,2,3 cho quý)",
+            "example": "1,2,3"
+          },
+          "daysOfWeek": {
+            "type": "string",
+            "description": "Chọn các thứ trong tuần (0=CN, 1=T2, ..., 6=T7)",
+            "example": "1,3,5"
+          },
+          "repetitiveStart": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày bắt đầu lặp (dùng để lấy ngày trong tháng/quý)"
+          },
+          "repetitiveEnd": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Lặp đến ngày"
+          },
+          "executionType": {
+            "type": "string",
+            "description": "Loại ngày lặp trong tháng: specific_day, relative_day, last_day",
+            "example": "specific_day"
+          },
+          "relativeWeek": {
+            "type": "string",
+            "description": "Tuần tương đối trong tháng: first, second, third, fourth, last",
+            "example": "first"
+          },
+          "relativeDay": {
+            "type": "number",
+            "description": "Ngày trong tuần cho tuần tương đối (0=CN, 1=T2,... 6=T7)",
+            "example": 1
+          },
+          "dayOfMonth": {
+            "type": "number",
+            "description": "Ngày cụ thể trong tháng (1-31)",
+            "example": 15
+          },
+          "weekDays": {
+            "type": "string",
+            "description": "Ngày cụ thể trong tháng (1-31)",
+            "example": 15
+          },
+          "monthInQuarter": {
+            "type": "number",
+            "description": "Tháng trong quý (1, 2, 3)",
+            "example": 1
+          },
+          "durationDays": {
+            "type": "number",
+            "description": "Số ngày thực hiện công việc",
+            "example": 2
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Giờ lặp (HH:mm)",
+            "example": "09:00"
+          },
+          "path": {
+            "type": "string",
+            "description": "Thể hiện quan hệ cha con (ID cha)",
+            "example": "123"
+          },
+          "pauseReason": {
+            "type": "string",
+            "description": "Lý do tạm dừng",
+            "example": "Nghỉ phép"
+          },
+          "pauseStartDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày bắt đầu tạm dừng"
+          },
+          "pauseEndDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Ngày kết thúc tạm dừng"
+          },
+          "pauseIndefinitely": {
+            "type": "boolean",
+            "description": "Tạm dừng vô thời hạn"
+          },
+          "progress": {
+            "type": "string",
+            "description": "Tiến độ",
+            "example": "50"
+          },
+          "status": {
+            "type": "number",
+            "description": "Trạng thái (1: active, 0: deleted)",
+            "example": 1
+          },
+          "parent": {
+            "type": "number",
+            "description": "Thể hiện cha con",
+            "example": 1
+          },
+          "recurringFromId": {
+            "type": "number",
+            "description": "Thể hiện cha con với cv lặp lại",
+            "example": 1
+          },
+          "docId": {
+            "type": "string",
+            "description": "ID tài liệu (văn bản - truyền vào nếu tạo công việc từ văn bản)",
+            "example": "1767954403052"
+          },
+          "meetingId": {
+            "type": "string",
+            "description": "ID tài liệu (cuộc họp - truyền vào nếu tạo công việc từ cuộc họp)",
+            "example": "C2A3C22E-74A7-4D79-8856-01E8570790DE"
+          },
+          "meetingConclusionId": {
+            "type": "string",
+            "description": "ID kết luận cuộc họp (cuộc họp - truyền vào nếu tạo công việc từ cuộc họp)",
+            "example": "C2A3C22E-74A7-4D79-8856-01E8570790DE"
+          },
+          "typeTaskMeeting": {
+            "type": "string",
+            "description": "Loại task cuộc họp (meeting: từ cuộc họp, conclusion: từ kết luận cuộc họp)",
+            "example": "meeting"
+          },
+          "projectId": {
+            "type": "number",
+            "description": "ID dự án (truyền vào nếu tạo công việc từ dự án)",
+            "example": 1
+          },
+          "processStatus": {
+            "type": "string",
+            "description": "Trạng thái xử lý",
+            "example": "1",
+            "default": "1"
+          },
+          "assigners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "directors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "supporters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "viewers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskUserDto"
+            }
+          },
+          "templateId": {
+            "type": "string",
+            "description": "ID Quy trình mẫu (Template)",
+            "example": "uuid"
+          },
+          "bypassTemplateTimeValidation": {
+            "type": "boolean",
+            "description": "Bỏ qua validate thời gian quy trình mẫu",
+            "example": false
+          },
+          "dependentTaskId": {
+            "type": "number",
+            "description": "ID công việc phụ thuộc",
+            "example": 1
+          }
+        }
+      },
+      "Object": {
+        "type": "object",
+        "properties": {}
+      },
+      "AssignBookDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "SetProcessItemDto": {
+        "type": "object",
+        "properties": {
+          "actionCode": {
+            "type": "string",
+            "description": "Action code (e.g., TRINH_LD, TRA_LAI)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID performing the action"
+          },
+          "note": {
+            "type": "string",
+            "description": "Content of employee in work"
+          },
+          "docIds": {
+            "description": "List of document IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "processId": {
+            "description": "List of document IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "targetRole": {
+            "type": "string",
+            "description": "Role of target"
+          },
+          "assignToUserId": {
+            "type": "string",
+            "description": "AssignToUserId of target user"
+          }
+        },
+        "required": [
+          "actionCode",
+          "userId",
+          "docIds",
+          "processId"
+        ]
+      },
+      "CreateGroupUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateGroupUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UploadFileRemoteSingningDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "TaskDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "example": "Prepare meeting slides"
+          },
+          "documentName": {
+            "type": "string",
+            "example": "agenda.pdf"
+          },
+          "deadline": {
+            "type": "string",
+            "example": "2026-01-10"
+          },
+          "attachableRole": {
+            "type": "string",
+            "example": "2026-01-10"
+          }
+        },
+        "required": [
+          "content",
+          "documentName",
+          "deadline",
+          "attachableRole"
+        ]
+      },
+      "RoleTaskDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "example": "USER_001"
+          },
+          "seatNumber": {
+            "type": "object",
+            "example": "A-5",
+            "description": "Số ghế (nếu có)"
+          },
+          "roomId": {
+            "type": "object",
+            "example": "PHONG_HOP_LON",
+            "description": "Phòng họp được chỉ định"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "OnlineMeetingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string",
+            "example": "Zoom",
+            "description": "Nền tảng họp online"
+          },
+          "meetingLink": {
+            "type": "string",
+            "example": "https://zoom.us/j/123456789"
+          },
+          "meetingId": {
+            "type": "string",
+            "example": "123456789",
+            "description": "ID cuộc họp trên nền tảng"
+          },
+          "passcode": {
+            "type": "string",
+            "example": "2025",
+            "description": "Mật khẩu tham gia (nếu có)"
+          }
+        },
+        "required": [
+          "platform",
+          "meetingLink",
+          "meetingId"
+        ]
+      },
+      "RecurrenceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "example": "TUAN",
+            "enum": [
+              "KHONG",
+              "NGAY",
+              "TUAN",
+              "THANG",
+              "NAM",
+              "TUY_CHINH"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "example": "2026-01-01"
+          },
+          "endDate": {
+            "type": "string",
+            "example": "2026-12-31"
+          },
+          "daysOfWeek": {
+            "type": "string",
+            "example": "MON,WED,FRI"
+          },
+          "endMonth": {
+            "type": "string",
+            "example": "2026-04"
+          },
+          "endYear": {
+            "type": "string",
+            "example": "2027"
+          },
+          "intervalValue": {
+            "type": "string",
+            "example": "3"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SittingPositionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "roomId": {
+            "type": "string",
+            "example": "20260115045841-ZV1YBAOI",
+            "description": "ID phòng họp"
+          },
+          "seatNumber": {
+            "example": [
+              "A-1",
+              "A-2"
+            ],
+            "description": "Danh sách số ghế trong phòng",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "roomId",
+          "seatNumber"
+        ]
+      },
+      "ParticipantDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user_123"
+          },
+          "seatNumber": {
+            "type": "string",
+            "example": "A-5"
+          },
+          "roomId": {
+            "type": "string",
+            "example": "user_123"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          }
+        },
+        "required": [
+          "userId",
+          "roomId"
+        ]
+      },
+      "UnitDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "unitId": {
+            "type": "string",
+            "example": "unit_01"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          },
+          "sittingPosition": {
+            "description": "Danh sách vị trí ngồi theo phòng",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SittingPositionDto"
+            }
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipantDto"
+            }
+          }
+        },
+        "required": [
+          "unitId"
+        ]
+      },
+      "CreateMeetingGuestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "guestName": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "Tên khách mời"
+          },
+          "guestTitle": {
+            "type": "string",
+            "example": "CEO",
+            "description": "Chức danh của khách mời"
+          },
+          "seatNumber": {
+            "type": "string",
+            "example": "A01",
+            "description": "Số ghế"
+          },
+          "roomId": {
+            "type": "string",
+            "example": "ROOM_01",
+            "description": "Phòng"
+          }
+        },
+        "required": [
+          "guestName",
+          "guestTitle",
+          "seatNumber",
+          "roomId"
+        ]
+      },
+      "CreateMeetingDto": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "example": "123456789",
+            "description": "ID cuộc họp trên nền tảng"
+          },
+          "title": {
+            "type": "string",
+            "example": "Weekly Planning"
+          },
+          "meetingType": {
+            "type": "string",
+            "example": "company"
+          },
+          "priority": {
+            "type": "string",
+            "example": "high"
+          },
+          "meetingDate": {
+            "type": "string",
+            "example": "2026-01-10"
+          },
+          "meetingTime": {
+            "type": "string",
+            "example": "09:00-12:00"
+          },
+          "meetingMode": {
+            "type": "string",
+            "example": "offline"
+          },
+          "roomIds": {
+            "example": [
+              "PHONG_HOP_LON",
+              "PHONG_CNTT",
+              "PHONG_KE_HOACH"
+            ],
+            "description": "Danh sách ID các phòng họp vật lý được sử dụng cho cuộc họp (bắt buộc với OFFLINE/HYBRID)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "example": "1",
+            "default": "1"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "bpmnVersion": {
+            "type": "string",
+            "example": "v1.0"
+          },
+          "content": {
+            "type": "string"
+          },
+          "chairmanId": {
+            "type": "string"
+          },
+          "secretaryId": {
+            "type": "string"
+          },
+          "chairman": {
+            "$ref": "#/components/schemas/RoleTaskDto"
+          },
+          "secretary": {
+            "$ref": "#/components/schemas/RoleTaskDto"
+          },
+          "directCommand": {
+            "type": "string"
+          },
+          "isCompany": {
+            "type": "boolean"
+          },
+          "onlineMeeting": {
+            "$ref": "#/components/schemas/OnlineMeetingDto"
+          },
+          "recurrence": {
+            "$ref": "#/components/schemas/RecurrenceDto"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitDto"
+            }
+          },
+          "guests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateMeetingGuestDto"
+            }
+          },
+          "filter": {
+            "type": "object",
+            "description": "Filter object"
+          },
+          "page": {
+            "type": "string",
+            "description": "Trang hiện tại",
+            "default": "1"
+          },
+          "limit": {
+            "type": "string",
+            "description": "Số bản ghi trên mỗi trang",
+            "default": "20"
+          },
+          "sort": {
+            "type": "object",
+            "description": "Sắp xếp kết quả, ví dụ: {\"userDeadline\":1}"
+          },
+          "processFn": {
+            "type": "string",
+            "description": "Mã danh sách (process function)"
+          },
+          "isToday": {
+            "type": "boolean"
+          },
+          "isNextDay": {
+            "type": "boolean"
+          },
+          "isOverrideInstance": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "meetingId",
+          "title",
+          "meetingType",
+          "meetingDate",
+          "meetingTime",
+          "meetingMode",
+          "processFn"
+        ]
+      },
+      "UpdateMeetingProcessingStateDto": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      },
+      "UpdateMeetingDto": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "example": "123456789",
+            "description": "ID cuộc họp trên nền tảng"
+          },
+          "title": {
+            "type": "string",
+            "example": "Weekly Planning"
+          },
+          "meetingType": {
+            "type": "string",
+            "example": "company"
+          },
+          "priority": {
+            "type": "string",
+            "example": "high"
+          },
+          "meetingDate": {
+            "type": "string",
+            "example": "2026-01-10"
+          },
+          "meetingTime": {
+            "type": "string",
+            "example": "09:00-12:00"
+          },
+          "meetingMode": {
+            "type": "string",
+            "example": "offline"
+          },
+          "roomIds": {
+            "example": [
+              "PHONG_HOP_LON",
+              "PHONG_CNTT",
+              "PHONG_KE_HOACH"
+            ],
+            "description": "Danh sách ID các phòng họp vật lý được sử dụng cho cuộc họp (bắt buộc với OFFLINE/HYBRID)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "example": "1",
+            "default": "1"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "bpmnVersion": {
+            "type": "string",
+            "example": "v1.0"
+          },
+          "content": {
+            "type": "string"
+          },
+          "chairmanId": {
+            "type": "string"
+          },
+          "secretaryId": {
+            "type": "string"
+          },
+          "chairman": {
+            "$ref": "#/components/schemas/RoleTaskDto"
+          },
+          "secretary": {
+            "$ref": "#/components/schemas/RoleTaskDto"
+          },
+          "directCommand": {
+            "type": "string"
+          },
+          "isCompany": {
+            "type": "boolean"
+          },
+          "onlineMeeting": {
+            "$ref": "#/components/schemas/OnlineMeetingDto"
+          },
+          "recurrence": {
+            "$ref": "#/components/schemas/RecurrenceDto"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitDto"
+            }
+          },
+          "guests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateMeetingGuestDto"
+            }
+          },
+          "filter": {
+            "type": "object",
+            "description": "Filter object"
+          },
+          "page": {
+            "type": "string",
+            "description": "Trang hiện tại",
+            "default": "1"
+          },
+          "limit": {
+            "type": "string",
+            "description": "Số bản ghi trên mỗi trang",
+            "default": "20"
+          },
+          "sort": {
+            "type": "object",
+            "description": "Sắp xếp kết quả, ví dụ: {\"userDeadline\":1}"
+          },
+          "processFn": {
+            "type": "string",
+            "description": "Mã danh sách (process function)"
+          },
+          "isToday": {
+            "type": "boolean"
+          },
+          "isNextDay": {
+            "type": "boolean"
+          },
+          "isOverrideInstance": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MeetingParticipantSeatItemDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "USER_001"
+          },
+          "seatNumber": {
+            "type": "string",
+            "example": "A1"
+          },
+          "participantRole": {
+            "type": "string",
+            "example": "CHAIRMAN"
+          },
+          "assignmentType": {
+            "type": "string",
+            "example": "INITIAL",
+            "enum": [
+              "INITIAL",
+              "REPLACED"
+            ],
+            "description": "Phân biệt gán từ đầu hay gán lại (backend có thể tự set)"
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "ReplaceRoomParticipantsDto": {
+        "type": "object",
+        "properties": {
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeetingParticipantSeatItemDto"
+            }
+          }
+        },
+        "required": [
+          "participants"
+        ]
+      },
+      "MeetingParticipantSeatItemAllRoomDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "USER_001"
+          },
+          "guestId": {
+            "type": "string",
+            "example": "GUEST_001"
+          },
+          "seatNumber": {
+            "type": "string",
+            "example": "A1"
+          },
+          "roomId": {
+            "type": "string",
+            "example": "room-1"
+          }
+        },
+        "required": [
+          "userId",
+          "guestId",
+          "seatNumber",
+          "roomId"
+        ]
+      },
+      "ReplaceRoomActionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ReplaceRoomParticipantsAllRoomDto": {
+        "type": "object",
+        "properties": {
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeetingParticipantSeatItemAllRoomDto"
+            }
+          },
+          "action": {
+            "$ref": "#/components/schemas/ReplaceRoomActionDto"
+          }
+        },
+        "required": [
+          "participants"
+        ]
+      },
+      "ParticipantDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "user_123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user_123"
+          },
+          "seatNumber": {
+            "type": "string",
+            "example": "5"
+          },
+          "roomId": {
+            "type": "string",
+            "example": "5 "
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "userId"
+        ]
+      },
+      "UnitDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "unit_01"
+          },
+          "unitId": {
+            "type": "string",
+            "example": "unit_01"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipantDetailDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "unitId"
+        ]
+      },
+      "MeetingDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "meet_123"
+          },
+          "title": {
+            "type": "string",
+            "example": "Weekly Planning"
+          },
+          "meetingType": {
+            "type": "string",
+            "example": "company"
+          },
+          "priority": {
+            "type": "string",
+            "example": "high"
+          },
+          "meetingDate": {
+            "type": "string",
+            "example": "2026-01-10"
+          },
+          "meetingTime": {
+            "type": "string",
+            "example": "09:00-12:00"
+          },
+          "meetingMode": {
+            "type": "string",
+            "example": "offline"
+          },
+          "roomIds": {
+            "example": [
+              "PHONG_HOP_LON",
+              "PHONG_CNTT"
+            ],
+            "description": "Danh sách ID phòng họp vật lý",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "example": "1"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "bpmnVersion": {
+            "type": "string",
+            "example": "v1.0"
+          },
+          "content": {
+            "type": "string"
+          },
+          "chairmanId": {
+            "type": "string"
+          },
+          "secretaryId": {
+            "type": "string"
+          },
+          "directCommand": {
+            "type": "string"
+          },
+          "onlineMeeting": {
+            "$ref": "#/components/schemas/OnlineMeetingDto"
+          },
+          "recurrence": {
+            "$ref": "#/components/schemas/RecurrenceDto"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskDto"
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitDetailDto"
+            }
+          },
+          "chairman": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleTaskDto"
+            }
+          },
+          "secretary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleTaskDto"
+            }
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "object"
+          },
+          "listparammeeting": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "meetingType",
+          "meetingDate",
+          "meetingTime",
+          "meetingMode",
+          "roomIds"
+        ]
+      },
+      "WorkItemDto": {
+        "type": "object",
+        "properties": {
+          "actionCode": {
+            "type": "string",
+            "description": "Action code (e.g., TRINH_LD, TRA_LAI)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID performing the action"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Display name of the user"
+          },
+          "assignToUserId": {
+            "type": "string",
+            "description": "ID of the user to assign the next task to"
+          },
+          "selections": {
+            "description": "Additional data for inclusive gateways or other logic",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignments": {
+            "description": "Additional data for inclusive gateways or other logic",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Deadline of employee in work"
+          },
+          "note": {
+            "type": "string",
+            "description": "Content of emloyee in work"
+          },
+          "roles": {
+            "type": "string",
+            "description": "roles target in work"
+          }
+        },
+        "required": [
+          "actionCode",
+          "userId",
+          "displayName"
+        ]
+      },
+      "DeleteMeetingsDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "MeetingConclusionDetailDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "AddMeetingRelationsDto": {
+        "type": "object",
+        "properties": {
+          "relatedMeetingIds": {
+            "description": "Danh sách ID các cuộc họp liên quan",
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "987fcdeb-51a2-43d7-b890-123456789abc"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "relatedMeetingIds"
+        ]
+      },
+      "AddMeetingRelationsResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "added": {
+                "type": "number",
+                "example": 2
+              },
+              "skipped": {
+                "type": "number",
+                "example": 0
+              },
+              "relations": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "RemoveMeetingRelationsDto": {
+        "type": "object",
+        "properties": {
+          "relatedMeetingIds": {
+            "description": "Danh sách ID các cuộc họp cần xóa liên kết",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "relatedMeetingIds"
+        ]
+      },
+      "MeetingConclusionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "meetingId": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "content": {
+            "type": "string",
+            "example": "Quyết định triển khai dự án mới trong Q2"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "user123"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "id",
+          "meetingId",
+          "content",
+          "createdBy",
+          "createdAt",
+          "updatedAt",
+          "status"
+        ]
+      },
+      "CreateMeetingConclusionResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MeetingConclusionDto"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "GetMeetingConclusionsResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "MeetingConclusionWithTasksDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "meetingId": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "content": {
+            "type": "string",
+            "example": "Quyết định triển khai dự án mới trong Q2"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "user123"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "status": {
+            "type": "number",
+            "example": 1
+          },
+          "tasks": {
+            "type": "array",
+            "description": "Danh sách tasks liên quan"
+          }
+        },
+        "required": [
+          "id",
+          "meetingId",
+          "content",
+          "createdBy",
+          "createdAt",
+          "updatedAt",
+          "status",
+          "tasks"
+        ]
+      },
+      "GetMeetingConclusionDetailResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MeetingConclusionWithTasksDto"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "UpdateSingleConclusionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "ID conclusion cần cập nhật",
+            "example": 123
+          },
+          "content": {
+            "type": "string",
+            "description": "Nội dung kết luận",
+            "example": "Cập nhật lại quyết định sau cuộc họp bổ sung"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Trạng thái (1: active, 0: inactive)",
+            "example": 1
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "UpdateMeetingConclusionsAndRelationsDto": {
+        "type": "object",
+        "properties": {
+          "conclusions": {
+            "description": "Danh sách conclusions cần cập nhật",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateSingleConclusionDto"
+            }
+          },
+          "relatedMeetingIds": {
+            "description": "Danh sách ID cuộc họp liên kết. Hệ thống sẽ đồng bộ để DB có đúng danh sách này",
+            "example": [
+              "MEET_2024_010",
+              "MEET_2024_022"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "conclusions",
+          "relatedMeetingIds"
+        ]
+      },
+      "MeetingRelationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "meetingId": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "relatedMeetingId": {
+            "type": "string",
+            "example": "987fcdeb-51a2-43d7-b890-123456789abc"
+          },
+          "relationType": {
+            "type": "string",
+            "example": "reference"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "meetingId",
+          "relatedMeetingId",
+          "relationType",
+          "createdAt"
+        ]
+      },
+      "MeetingRelationsSyncResultDto": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "number",
+            "example": 2,
+            "description": "Số relations được thêm mới"
+          },
+          "removed": {
+            "type": "number",
+            "example": 1,
+            "description": "Số relations bị xoá do không còn trong danh sách gửi lên"
+          },
+          "skipped": {
+            "type": "number",
+            "example": 3,
+            "description": "Số relations đã tồn tại, không thay đổi"
+          },
+          "relations": {
+            "description": "Danh sách relations được thêm mới trong lần cập nhật này",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeetingRelationResponseDto"
+            }
+          }
+        },
+        "required": [
+          "added",
+          "removed",
+          "skipped",
+          "relations"
+        ]
+      },
+      "UpdateMeetingConclusionsResultDto": {
+        "type": "object",
+        "properties": {
+          "updatedConclusions": {
+            "description": "Danh sách conclusions đã được cập nhật",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeetingConclusionDto"
+            }
+          },
+          "relations": {
+            "$ref": "#/components/schemas/MeetingRelationsSyncResultDto"
+          }
+        },
+        "required": [
+          "updatedConclusions",
+          "relations"
+        ]
+      },
+      "UpdateMeetingConclusionResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateMeetingConclusionsResultDto"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "DeleteMeetingConclusionResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "deleted": {
+                "type": "number",
+                "example": 1
+              }
+            }
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "CreateMeetingConclusionDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Nội dung kết luận/ghi nhận",
+            "example": "Quyết định triển khai dự án mới trong Q2"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID người tạo",
+            "example": "user123"
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "CreateMeetingConclusionsAndRelationsDto": {
+        "type": "object",
+        "properties": {
+          "conclusions": {
+            "description": "Danh sách meeting conclusions cần tạo",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateMeetingConclusionDto"
+            }
+          },
+          "relatedMeetingIds": {
+            "description": "Danh sách ID các cuộc họp liên quan",
+            "example": [
+              "97BE9215-C1E9-4184-9545-211EE9C8A8EA",
+              "31E42EA0-7BBB-4530-8892-233DB2FAA81B"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "conclusions"
+        ]
+      },
+      "CheckRoomConflictDto": {
+        "type": "object",
+        "properties": {
+          "meetingDate": {
+            "type": "string",
+            "example": "2026-01-16",
+            "description": "Ngày họp (yyyy-MM-dd)"
+          },
+          "meetingTime": {
+            "type": "string",
+            "example": "01:00-02:00",
+            "description": "Thời gian họp (HH:mm-HH:mm)"
+          },
+          "roomIds": {
+            "example": [
+              "20260107090029-MR29"
+            ],
+            "description": "Danh sách ID phòng họp",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeMeetingId": {
+            "type": "string",
+            "example": "0711CA4D-96D4-4388-A8FF-6E0ED230F7C2",
+            "description": "ID cuộc họp cần loại trừ (dùng khi update)"
+          }
+        },
+        "required": [
+          "meetingDate",
+          "meetingTime",
+          "roomIds"
+        ]
+      },
+      "CheckUserConflictDto": {
+        "type": "object",
+        "properties": {
+          "meetingDate": {
+            "type": "string",
+            "example": "2026-01-13",
+            "description": "Ngày họp (yyyy-MM-dd)"
+          },
+          "meetingTime": {
+            "type": "string",
+            "example": "01:00-02:00",
+            "description": "Thời gian họp (HH:mm-HH:mm)"
+          },
+          "userIds": {
+            "example": [
+              "89045483-CDEB-4D9A-A0BE-66FCEA9A8F44",
+              "351AA98C-9DBD-42A5-B87B-9369466373AB"
+            ],
+            "description": "Danh sách userId cần check trùng",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludeMeetingId": {
+            "type": "string",
+            "example": "0711CA4D-96D4-4388-A8FF-6E0ED230F7C2",
+            "description": "ID cuộc họp cần loại trừ (chỉ dùng khi update)"
+          }
+        },
+        "required": [
+          "meetingDate",
+          "meetingTime",
+          "userIds"
+        ]
+      },
+      "CreateAudioTranscriptDto": {
+        "type": "object",
+        "properties": {
+          "meetingId": {
+            "type": "string",
+            "description": "ID của cuộc họp"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "description": "Độ dài file audio (giây)"
+          },
+          "transcriptText": {
+            "type": "string",
+            "description": "Nội dung văn bản transcript"
+          }
+        },
+        "required": [
+          "meetingId"
+        ]
+      },
+      "AudioTranscriptResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "success",
+          "message",
+          "data"
+        ]
+      },
+      "UpdateTranscriptTextDto": {
+        "type": "object",
+        "properties": {
+          "transcriptText": {
+            "type": "string",
+            "description": "Nội dung văn bản transcript"
+          }
+        },
+        "required": [
+          "transcriptText"
+        ]
+      },
+      "GetRolesDto": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "string",
+            "description": "Comma-separated list of roles."
+          },
+          "documentId": {
+            "type": "string",
+            "description": "ID of document"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID of user"
+          },
+          "documentType": {
+            "type": "string",
+            "description": "Type of document"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Check same of unit"
+          }
+        },
+        "required": [
+          "documentId",
+          "userId",
+          "documentType",
+          "unit"
+        ]
+      },
+      "OrganizationUnitsByFlowDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ChangePasswordDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "TransferOpinionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateOutDocDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateOutDocDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "DepartmentStatisticProcessDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID phòng ban",
+            "example": "68afb3a1cb36081f0bba5dd6"
+          },
+          "senderUnit": {
+            "type": "string",
+            "description": "Tên phòng ban",
+            "example": "Văn phòng"
+          },
+          "total": {
+            "type": "number",
+            "description": "Tổng VB trình",
+            "example": 150
+          },
+          "onTime": {
+            "type": "number",
+            "description": "Đúng hạn",
+            "example": 120
+          },
+          "late": {
+            "type": "number",
+            "description": "Trễ hạn",
+            "example": 20
+          },
+          "unprocessed": {
+            "type": "number",
+            "description": "Đang xử lý",
+            "example": 10
+          },
+          "avg": {
+            "type": "number",
+            "description": "TG trình TB (ngày)",
+            "example": 10
+          },
+          "onTimeRate": {
+            "type": "string",
+            "description": "Tỷ lệ đúng hạn",
+            "example": "80.00%"
+          }
+        },
+        "required": [
+          "id",
+          "senderUnit",
+          "total",
+          "onTime",
+          "late",
+          "unprocessed",
+          "avg",
+          "onTimeRate"
+        ]
+      },
+      "StatisticReportProcessResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Danh sách thống kê theo phòng ban",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentStatisticProcessDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Tổng số phòng ban",
+            "example": 15
+          },
+          "page": {
+            "type": "number",
+            "description": "Trang hiện tại",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "Số lượng bản ghi mỗi trang",
+            "example": 20
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Tổng số trang",
+            "example": 1
+          }
+        },
+        "required": [
+          "data",
+          "total",
+          "page",
+          "limit",
+          "totalPages"
+        ]
+      },
+      "UploadFileDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFileLocationDto": {
+        "type": "object",
+        "properties": {
+          "object_type": {
+            "type": "string",
+            "description": "Loại đối tượng liên quan. Ví dụ: 'document', 'user_profile'",
+            "default": "default"
+          },
+          "object_id": {
+            "type": "string",
+            "description": "ID của đối tượng mà file này liên quan",
+            "default": "0"
+          },
+          "parent_id": {
+            "type": "number",
+            "description": "Tùy chọn: ID của thư mục cha trong bảng 'files'"
+          }
+        }
+      },
+      "CreateFolderDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "DeleteFilesDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "InsertTextDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateNotificationDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateNotificationDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "TestSsoConnectionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateAuthConfigDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateAuthConfigDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRoleFeatureDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateRoleFeatureDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRoleFeatureSqlDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateRoleFeatureSqlDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateAuthorityProcessDto": {
+        "type": "object",
+        "properties": {
+          "authorized": {
+            "type": "string",
+            "description": "ID người được ủy quyền"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu ủy quyền",
+            "example": "2025-12-01T00:00:00Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Ngày kết thúc ủy quyền",
+            "example": "2025-12-31T23:59:59Z"
+          },
+          "files": {
+            "description": "Danh sách file kèm",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "authorized",
+          "startDate",
+          "endDate"
+        ]
+      },
+      "UpdateAuthorityProcessDto": {
+        "type": "object",
+        "properties": {
+          "authorized": {
+            "type": "string",
+            "description": "ID người được ủy quyền"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu ủy quyền",
+            "example": "2025-12-01T00:00:00Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Ngày kết thúc ủy quyền",
+            "example": "2025-12-31T23:59:59Z"
+          },
+          "files": {
+            "description": "Danh sách file kèm",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isForceEnd": {
+            "type": "boolean",
+            "description": "Cập nhật này có kết thúc ủy quyền ngay lập tức hay không",
+            "default": false
+          }
+        }
+      },
+      "CreateEntityRoleGroupDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ProcessWorkItemDto": {
+        "type": "object",
+        "properties": {
+          "actionCode": {
+            "type": "string",
+            "description": "Action code (e.g., TRINH_LD, TRA_LAI)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID performing the action"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Display name of the user"
+          },
+          "assignToUserId": {
+            "type": "string",
+            "description": "ID of the user to assign the next task to"
+          },
+          "selections": {
+            "description": "Additional data for inclusive gateways or other logic",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignments": {
+            "description": "Additional data for inclusive gateways or other logic",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Deadline of employee in work"
+          },
+          "note": {
+            "type": "string",
+            "description": "Content of emloyee in work"
+          },
+          "roles": {
+            "type": "string",
+            "description": "roles of employee in work"
+          }
+        },
+        "required": [
+          "actionCode",
+          "userId",
+          "displayName"
+        ]
+      },
+      "ProcessWorkItemDtoDraft": {
+        "type": "object",
+        "properties": {
+          "actionCode": {
+            "type": "string",
+            "description": "Action code (e.g., TRINH_LD, TRA_LAI)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID performing the action"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Display name of the user"
+          },
+          "assignToUserId": {
+            "type": "string",
+            "description": "ID of the user to assign the next task to"
+          },
+          "selections": {
+            "description": "Additional data for inclusive gateways or other logic",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignments": {
+            "description": "Additional data for inclusive gateways or other logic",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Deadline of employee in work"
+          },
+          "note": {
+            "type": "string",
+            "description": "Content of emloyee in work"
+          },
+          "roles": {
+            "type": "string",
+            "description": "roles of employee in work"
+          }
+        },
+        "required": [
+          "actionCode",
+          "userId",
+          "displayName"
+        ]
+      },
+      "SignDocumentDto": {
+        "type": "object",
+        "properties": {
+          "docIds": {
+            "type": "string",
+            "description": "ID của văn bản cần ký",
+            "example": "doc_12345"
+          },
+          "actionCode": {
+            "type": "string",
+            "description": "Mã hành động (action code)",
+            "example": "APPROVE"
+          }
+        },
+        "required": [
+          "docIds",
+          "actionCode"
+        ]
+      },
+      "SendMessageDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateConversationDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateConversationDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ExtendDeadlineItemDto": {
+        "type": "object",
+        "properties": {
+          "auditId": {
+            "type": "number",
+            "description": "ID của bản ghi audit cần gia hạn"
+          },
+          "newDeadline": {
+            "type": "string",
+            "description": "Hạn xử lý mới",
+            "example": "2026-12-31T17:00:00.000Z"
+          }
+        },
+        "required": [
+          "auditId",
+          "newDeadline"
+        ]
+      },
+      "ExtendDeadlineDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Danh sách các mục cần gia hạn",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtendDeadlineItemDto"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "DepartmentStatisticDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID phòng ban",
+            "example": "68afb3a1cb36081f0bba5dd6"
+          },
+          "senderUnit": {
+            "type": "string",
+            "description": "Tên phòng ban",
+            "example": "Văn phòng"
+          },
+          "totalReceived": {
+            "type": "number",
+            "description": "Tổng số văn bản nhận",
+            "example": 150
+          },
+          "onTime": {
+            "type": "number",
+            "description": "Số văn bản hoàn thành đúng hạn",
+            "example": 120
+          },
+          "late": {
+            "type": "number",
+            "description": "Số văn bản hoàn thành trễ hạn",
+            "example": 20
+          },
+          "unprocessed": {
+            "type": "number",
+            "description": "Số văn bản chưa xử lý",
+            "example": 10
+          },
+          "onTimeRate": {
+            "type": "string",
+            "description": "Tỷ lệ hoàn thành đúng hạn",
+            "example": "80.00%"
+          },
+          "lateRate": {
+            "type": "string",
+            "description": "Tỷ lệ hoàn thành trễ hạn",
+            "example": "20.00%"
+          }
+        },
+        "required": [
+          "id",
+          "senderUnit",
+          "totalReceived",
+          "onTime",
+          "late",
+          "unprocessed",
+          "onTimeRate",
+          "lateRate"
+        ]
+      },
+      "StatisticReportResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Danh sách thống kê theo phòng ban",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentStatisticDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Tổng số phòng ban",
+            "example": 15
+          },
+          "page": {
+            "type": "number",
+            "description": "Trang hiện tại",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "Số lượng bản ghi mỗi trang",
+            "example": 20
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Tổng số trang",
+            "example": 1
+          }
+        },
+        "required": [
+          "data",
+          "total",
+          "page",
+          "limit",
+          "totalPages"
+        ]
+      },
+      "DepartmentStatisticSenderUnitDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID phòng ban",
+            "example": "68afb3a1cb36081f0bba5dd6"
+          },
+          "senderUnit": {
+            "type": "string",
+            "description": "Tên phòng ban",
+            "example": "Văn phòng"
+          },
+          "total": {
+            "type": "number",
+            "description": "Tổng số văn bản",
+            "example": 150
+          },
+          "officialLetter": {
+            "type": "number",
+            "description": "Công văn",
+            "example": 120
+          },
+          "decision": {
+            "type": "number",
+            "description": "Quyết định",
+            "example": 20
+          },
+          "announcement": {
+            "type": "number",
+            "description": "Thông báo",
+            "example": 10
+          },
+          "report": {
+            "type": "number",
+            "description": "Báo cáo",
+            "example": 10
+          },
+          "other": {
+            "type": "number",
+            "description": "Khác",
+            "example": 20
+          }
+        },
+        "required": [
+          "id",
+          "senderUnit",
+          "total",
+          "officialLetter",
+          "decision",
+          "announcement",
+          "report",
+          "other"
+        ]
+      },
+      "StatisticReportSenderUnitResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Danh sách thống kê theo phòng ban",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentStatisticSenderUnitDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Tổng số phòng ban",
+            "example": 15
+          },
+          "page": {
+            "type": "number",
+            "description": "Trang hiện tại",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "Số lượng bản ghi mỗi trang",
+            "example": 20
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "Tổng số trang",
+            "example": 1
+          }
+        },
+        "required": [
+          "data",
+          "total",
+          "page",
+          "limit",
+          "totalPages"
+        ]
+      },
+      "CreateConfigurationDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateConfigurationDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateFeatureManagementDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "updateFeatureManagementDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpsertTableConfigDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ExportBodyRequestDto": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Document ID"
+          },
+          "typeDocument": {
+            "type": "string",
+            "description": "Document type",
+            "example": "incoming"
+          },
+          "templateCode": {
+            "type": "string",
+            "description": "Template code"
+          }
+        },
+        "required": [
+          "documentId",
+          "typeDocument"
+        ]
+      },
+      "CreateCrmsourceDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateCrmsourceDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "DeleteCrmSourceDataDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "Mảng các ID của mục dữ liệu cần xóa",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "CreateCrmSourceDataDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tiêu đề của mục dữ liệu",
+            "example": "Khách hàng tiềm năng"
+          },
+          "value": {
+            "type": "string",
+            "description": "Giá trị của mục dữ liệu",
+            "example": "lead"
+          }
+        },
+        "required": [
+          "title",
+          "value"
+        ]
+      },
+      "UpdateCrmSourceDataDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tiêu đề của mục dữ liệu",
+            "example": "Khách hàng mới"
+          },
+          "value": {
+            "type": "string",
+            "description": "Giá trị của mục dữ liệu",
+            "example": "new_customer"
+          }
+        }
+      },
+      "CreateOrganizationUnitDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "OrganizationUnitEntity": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateOrganizationUnitDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "OrganizationUnitDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "68afb3e4cb36081f0bba5dd7"
+          },
+          "name": {
+            "type": "string",
+            "example": "Đơn vị thành viên"
+          },
+          "code": {
+            "type": "string",
+            "example": "TC2"
+          },
+          "type": {
+            "type": "string",
+            "example": "Phòng"
+          },
+          "mpath": {
+            "type": "string",
+            "example": "68afb3a1cb36081f0bba5dd6/68afb3e4cb36081f0bba5dd7"
+          },
+          "parentId": {
+            "type": "string",
+            "example": "68afb3a1cb36081f0bba5dd6"
+          },
+          "level": {
+            "type": "number",
+            "example": 2,
+            "description": "Cấp độ trong cây tổ chức (1=gốc, 2=con, 3=cháu...)"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "code",
+          "type",
+          "mpath",
+          "parentId",
+          "level"
+        ]
+      },
+      "GetChildOrganizationsResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationUnitDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "example": 10
+          }
+        },
+        "required": [
+          "data",
+          "total"
+        ]
+      },
+      "AmenityInputDto": {
+        "type": "object",
+        "properties": {
+          "amenityId": {
+            "type": "string",
+            "example": "20260105100000-AMENITY01"
+          },
+          "quantity": {
+            "type": "number",
+            "example": 2
+          }
+        },
+        "required": [
+          "amenityId",
+          "quantity"
+        ]
+      },
+      "CreateMeetingRoomDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Phòng họp Alpha"
+          },
+          "location": {
+            "type": "string",
+            "example": "Tòa A - Tầng 5"
+          },
+          "capacity": {
+            "type": "number",
+            "example": 20
+          },
+          "status": {
+            "type": "number",
+            "example": 1
+          },
+          "stage": {
+            "type": "number",
+            "example": 1
+          },
+          "availableFrom": {
+            "type": "string",
+            "example": "2026-01-01T07:00:00Z"
+          },
+          "layoutType": {
+            "type": "string",
+            "example": "THEATER"
+          },
+          "layoutRows": {
+            "type": "number",
+            "example": 5
+          },
+          "layoutSeats": {
+            "type": "number",
+            "example": 100
+          },
+          "layoutBlocks": {
+            "type": "number",
+            "example": 10
+          },
+          "totalSeating": {
+            "type": "number",
+            "example": 120
+          },
+          "image": {
+            "type": "string",
+            "example": "https://images.unsplash.com/photo-1497366216548-37526070297c"
+          },
+          "amenities": {
+            "example": [
+              {
+                "amenityId": "20260105100000-PROJ01",
+                "quantity": 2
+              },
+              {
+                "amenityId": "20260105100000-CHAIR01",
+                "quantity": 20
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AmenityInputDto"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "capacity",
+          "status",
+          "stage"
+        ]
+      },
+      "UpdateMeetingRoomDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Phòng họp Beta"
+          },
+          "location": {
+            "type": "string",
+            "example": "Tòa B - Tầng 3"
+          },
+          "capacity": {
+            "type": "number",
+            "example": 30
+          },
+          "status": {
+            "type": "number",
+            "example": 2
+          },
+          "stage": {
+            "type": "number",
+            "example": 2
+          },
+          "availableFrom": {
+            "type": "string",
+            "example": "2026-01-01T10:00:00Z"
+          },
+          "layoutType": {
+            "type": "string",
+            "example": "BOARDROOM"
+          },
+          "layoutRows": {
+            "type": "number",
+            "example": 4
+          },
+          "layoutSeats": {
+            "type": "number",
+            "example": 80
+          },
+          "layoutBlocks": {
+            "type": "number",
+            "example": 8
+          },
+          "totalSeating": {
+            "type": "number",
+            "example": 100
+          },
+          "image": {
+            "type": "string",
+            "example": "https://images.unsplash.com/photo-1497366216548-37526070297c"
+          },
+          "amenities": {
+            "description": "Nếu gửi field này, sẽ replace toàn bộ amenities cũ",
+            "example": [
+              {
+                "amenityId": "20260105100000-PROJ01",
+                "quantity": 3
+              },
+              {
+                "amenityId": "20260105100000-WHITEBOARD01",
+                "quantity": 1
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AmenityInputDto"
+            }
+          }
+        }
+      },
+      "DeleteMeetingRoomDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "example": [
+              "20260105100000-A1B2C3D4"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "RoomAvailabilityResponseDto": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "description": "Phòng có sẵn hay không"
+          },
+          "message": {
+            "type": "string",
+            "description": "Thông báo"
+          },
+          "activeMeetings": {
+            "description": "Danh sách lịch họp đang diễn ra",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "available",
+          "message"
+        ]
+      },
+      "CreateAmenitiesDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Máy chiếu"
+          },
+          "note": {
+            "type": "string",
+            "example": "Máy chiếu 4K gắn trần"
+          },
+          "status": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateAmenitiesDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Máy chiếu HD"
+          },
+          "note": {
+            "type": "string",
+            "example": "Máy chiếu HD gắn trần"
+          },
+          "status": {
+            "type": "number",
+            "example": 2
+          }
+        }
+      },
+      "DeleteAmenitiesDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "example": [
+              "20260105073051-1HSX632M"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "CreateCommentDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "fileId": {
+            "type": "array",
+            "description": "Mảng object hỗn hợp (mixed object array)",
+            "example": [
+              {
+                "id": "file123",
+                "name": "a.png"
+              },
+              {
+                "id": "file456",
+                "size": 200,
+                "type": "pdf"
+              }
+            ]
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "userName",
+          "content",
+          "type"
+        ]
+      },
+      "UpdateCommentDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Nội dung mới của comment"
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "CreateNewsCommentDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateNewsCommentDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "LikeNewsDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateNewsDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateNewsDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "OrFieldsFilterDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tìm trong title",
+            "example": "abc"
+          },
+          "content": {
+            "type": "string",
+            "description": "Tìm trong content",
+            "example": "xyz"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tìm trong tags",
+            "example": "tag1"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Tìm trong summary",
+            "example": "summary text"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Tìm trong slug",
+            "example": "tin-tuc"
+          },
+          "submitterName": {
+            "type": "string",
+            "description": "Tìm trong submitterName",
+            "example": "Nguyen Van A"
+          },
+          "authorName": {
+            "type": "string",
+            "description": "Tìm trong authorName",
+            "example": "Tran Thi B"
+          },
+          "rejectorName": {
+            "type": "string",
+            "description": "Tìm trong rejectorName",
+            "example": "Le Van C"
+          },
+          "reviewerName": {
+            "type": "string",
+            "description": "Tìm trong reviewerName",
+            "example": "Pham Van D"
+          },
+          "cancellerName": {
+            "type": "string",
+            "description": "Tìm trong cancellerName",
+            "example": "Hoang Van E"
+          },
+          "recalledByName": {
+            "type": "string",
+            "description": "Tìm trong recalledByName",
+            "example": "Vo Thi F"
+          },
+          "department": {
+            "type": "string",
+            "description": "Tìm trong department",
+            "example": "Phong KT"
+          }
+        }
+      },
+      "DateRangeFilterDto": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu",
+            "example": "2026-01-13"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Ngày kết thúc",
+            "example": "2026-01-14"
+          }
+        }
+      },
+      "NewsFilterDto": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Tìm kiếm tổng quát trong tất cả các trường (OR logic)",
+            "example": "tin tức"
+          },
+          "orFields": {
+            "description": "Tìm kiếm OR trong nhiều trường với giá trị khác nhau",
+            "example": {
+              "title": "abc",
+              "submitterName": "xyz"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OrFieldsFilterDto"
+              }
+            ]
+          },
+          "topic": {
+            "type": "string",
+            "description": "Lọc theo topic",
+            "example": "technology"
+          },
+          "status": {
+            "type": "string",
+            "description": "Lọc theo trạng thái",
+            "example": "0"
+          },
+          "type": {
+            "type": "string",
+            "description": "Lọc theo loại tin",
+            "example": "news"
+          },
+          "organizationUnitId": {
+            "type": "string",
+            "description": "Lọc theo đơn vị",
+            "example": "123"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Lọc theo người tạo",
+            "example": "user123"
+          },
+          "title": {
+            "type": "string",
+            "description": "Lọc theo tiêu đề tin",
+            "example": "HLV"
+          },
+          "rejectorName": {
+            "type": "string",
+            "description": "Lọc theo tên người từ chối",
+            "example": "HLV"
+          },
+          "submitterName": {
+            "type": "string",
+            "description": "Lọc theo tên người trình",
+            "example": "Nguyen Van A"
+          },
+          "authorName": {
+            "type": "string",
+            "description": "Lọc theo tên tác giả",
+            "example": "Tran Thi B"
+          },
+          "reviewerName": {
+            "type": "string",
+            "description": "Lọc theo tên người duyệt",
+            "example": "Le Van C"
+          },
+          "recallReason": {
+            "type": "string",
+            "description": "Lọc theo lý do thu hồi",
+            "example": "Le Van C"
+          },
+          "recalledByName": {
+            "type": "string",
+            "description": "Lọc theo người thu hồi",
+            "example": "Le Van C"
+          },
+          "cancellerName": {
+            "type": "string",
+            "description": "Lọc theo người hủy",
+            "example": "Le Van C"
+          },
+          "department": {
+            "type": "string",
+            "description": "Lọc theo phòng ban người gửi",
+            "example": "68afc3f5cb36081f0bbef552"
+          },
+          "submittedAt": {
+            "description": "Lọc theo khoảng ngày trình duyệt",
+            "example": {
+              "startDate": "2026-01-13",
+              "endDate": "2026-01-14"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateRangeFilterDto"
+              }
+            ]
+          },
+          "recalledAt": {
+            "description": "Lọc theo khoảng ngày thu hồi",
+            "example": {
+              "startDate": "2026-01-13",
+              "endDate": "2026-01-14"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateRangeFilterDto"
+              }
+            ]
+          },
+          "publishedAt": {
+            "description": "Lọc theo khoảng ngày xuất bản",
+            "example": {
+              "startDate": "2026-01-13",
+              "endDate": "2026-01-14"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateRangeFilterDto"
+              }
+            ]
+          },
+          "deadline": {
+            "description": "Lọc theo khoảng ngày xuất bản",
+            "example": {
+              "startDate": "2026-01-13",
+              "endDate": "2026-01-14"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateRangeFilterDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "description": "Lọc theo khoảng ngày xuất bản",
+            "example": {
+              "startDate": "2026-01-13",
+              "endDate": "2026-01-14"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateRangeFilterDto"
+              }
+            ]
+          },
+          "isComment": {
+            "type": "string",
+            "description": "[Deprecated] Lọc theo isComment - dùng filter[isComment] thay thế",
+            "example": "true"
+          },
+          "tags": {
+            "type": "string",
+            "description": "[Deprecated] Lọc theo isComment - dùng filter[isComment] thay thế",
+            "example": "true"
+          }
+        }
+      },
+      "CreateTopicDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateTopicDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "DeleteManyDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "LikeAlbumImageDto": {
+        "type": "object",
+        "properties": {
+          "albumId": {
+            "type": "string",
+            "example": "uuid-of-album"
+          },
+          "isLike": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "albumId"
+        ]
+      },
+      "LikeVideoDto": {
+        "type": "object",
+        "properties": {
+          "videoId": {
+            "type": "string",
+            "example": "uuid-of-video"
+          },
+          "isLike": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "videoId"
+        ]
+      },
+      "CreateProjectDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tên dự án"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Ngày kết thúc"
+          },
+          "process": {
+            "type": "string",
+            "description": "Quy trình"
+          },
+          "reminderDays": {
+            "type": "number",
+            "description": "Thời gian nhắc hạn (số ngày)",
+            "default": 3
+          },
+          "priority": {
+            "type": "string",
+            "description": "Độ ưu tiên",
+            "default": "binhthuong",
+            "example": "gap"
+          },
+          "typeProject": {
+            "type": "string",
+            "description": "Loại dự án"
+          },
+          "budget": {
+            "type": "number",
+            "description": "Ngân sách",
+            "default": 0
+          },
+          "description": {
+            "type": "string",
+            "description": "Mô tả dự án"
+          },
+          "managerId": {
+            "type": "string",
+            "description": "Quản lý dự án (ID User)"
+          },
+          "members": {
+            "type": "string",
+            "description": "Thành viên dự án (IDs cách nhau bởi dấu phẩy)"
+          },
+          "viewers": {
+            "type": "string",
+            "description": "Người xem (IDs cách nhau bởi dấu phẩy)"
+          },
+          "progress": {
+            "type": "number",
+            "description": "Tiến độ (%)",
+            "default": 0
+          },
+          "projectStatus": {
+            "type": "string",
+            "description": "Trạng thái nghiệp vụ (Chuẩn bị, Đang thực hiện, Hoàn thành, Hủy, Tạm dừng)",
+            "default": "1"
+          },
+          "permissions": {
+            "type": "object",
+            "description": "Phân quyền chi tiết cho các vai trò"
+          },
+          "isUpdateStatus": {
+            "type": "string"
+          },
+          "isUpdateGeneralInfo": {
+            "type": "string"
+          },
+          "isUpdateParticipants": {
+            "type": "string"
+          },
+          "isUpdateProcess": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "reminderDays",
+          "priority",
+          "budget",
+          "isUpdateStatus",
+          "isUpdateGeneralInfo",
+          "isUpdateParticipants",
+          "isUpdateProcess"
+        ]
+      },
+      "UpdateProjectDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tên dự án"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Ngày kết thúc"
+          },
+          "process": {
+            "type": "string",
+            "description": "Quy trình"
+          },
+          "reminderDays": {
+            "type": "number",
+            "description": "Thời gian nhắc hạn (số ngày)",
+            "default": 3
+          },
+          "priority": {
+            "type": "string",
+            "description": "Độ ưu tiên",
+            "default": "binhthuong",
+            "example": "gap"
+          },
+          "typeProject": {
+            "type": "string",
+            "description": "Loại dự án"
+          },
+          "budget": {
+            "type": "number",
+            "description": "Ngân sách",
+            "default": 0
+          },
+          "description": {
+            "type": "string",
+            "description": "Mô tả dự án"
+          },
+          "managerId": {
+            "type": "string",
+            "description": "Quản lý dự án (ID User)"
+          },
+          "members": {
+            "type": "string",
+            "description": "Thành viên dự án (IDs cách nhau bởi dấu phẩy)"
+          },
+          "viewers": {
+            "type": "string",
+            "description": "Người xem (IDs cách nhau bởi dấu phẩy)"
+          },
+          "progress": {
+            "type": "number",
+            "description": "Tiến độ (%)",
+            "default": 0
+          },
+          "projectStatus": {
+            "type": "string",
+            "description": "Trạng thái nghiệp vụ (Chuẩn bị, Đang thực hiện, Hoàn thành, Hủy, Tạm dừng)",
+            "default": "1"
+          },
+          "permissions": {
+            "type": "object",
+            "description": "Phân quyền chi tiết cho các vai trò"
+          },
+          "isUpdateStatus": {
+            "type": "string"
+          },
+          "isUpdateGeneralInfo": {
+            "type": "string"
+          },
+          "isUpdateParticipants": {
+            "type": "string"
+          },
+          "isUpdateProcess": {
+            "type": "string"
+          }
+        }
+      },
+      "DutyDetailDto": {
+        "type": "object",
+        "properties": {
+          "dutyDate": {
+            "type": "string",
+            "description": "Ngày trực (YYYY-MM-DD)",
+            "example": "2025-01-20"
+          },
+          "dayOfWeek": {
+            "type": "number",
+            "description": "Thứ trong tuần (1: CN, 2: T2, ..., 7: T7)",
+            "example": 2,
+            "minimum": 1,
+            "maximum": 7
+          },
+          "leaderId": {
+            "type": "string",
+            "description": "User ID của lãnh đạo trực",
+            "example": "USER_12345"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Ghi chú",
+            "example": "Trực cả ngày"
+          }
+        },
+        "required": [
+          "dutyDate",
+          "dayOfWeek",
+          "leaderId"
+        ]
+      },
+      "CreateLeadershipDutyScheduleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tiêu đề lịch",
+            "example": "Lịch trực tuần 3 tháng 1/2025"
+          },
+          "week": {
+            "type": "number",
+            "description": "Tuần (1-52)",
+            "example": 3,
+            "minimum": 1,
+            "maximum": 52
+          },
+          "year": {
+            "type": "number",
+            "description": "Năm",
+            "example": 2025,
+            "minimum": 2020
+          },
+          "scheduleDate": {
+            "type": "string",
+            "description": "Ngày tạo lịch (YYYY-MM-DD)",
+            "example": "2025-01-20"
+          },
+          "fromDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu (YYYY-MM-DD)"
+          },
+          "toDate": {
+            "type": "string",
+            "description": "Ngày kết thúc (YYYY-MM-DD)"
+          },
+          "scheduleTime": {
+            "type": "string",
+            "description": "Giờ tạo lịch (YYYY-MM-DD)",
+            "example": "08-30"
+          },
+          "details": {
+            "description": "Danh sách chi tiết lịch trực 7 ngày",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DutyDetailDto"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "week",
+          "year",
+          "scheduleDate",
+          "scheduleTime",
+          "details"
+        ]
+      },
+      "DeleteManyLeadershipDutySchedulesDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "Mảng ID cần xóa",
+            "example": [
+              "LDS_123_ABC",
+              "LDS_456_DEF"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "UpdateLeadershipDutyScheduleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tiêu đề lịch"
+          },
+          "week": {
+            "type": "number",
+            "description": "Tuần (1-52)",
+            "minimum": 1,
+            "maximum": 52
+          },
+          "year": {
+            "type": "number",
+            "description": "Năm",
+            "minimum": 2020
+          },
+          "fromDate": {
+            "type": "string",
+            "description": "Ngày bắt đầu (YYYY-MM-DD)"
+          },
+          "toDate": {
+            "type": "string",
+            "description": "Ngày kết thúc (YYYY-MM-DD)"
+          },
+          "scheduleDate": {
+            "type": "string",
+            "description": "Ngày tạo lịch (YYYY-MM-DD)"
+          },
+          "scheduleTime": {
+            "type": "string",
+            "description": "Giờ tạo lịch (HH-MM)"
+          },
+          "details": {
+            "description": "Danh sách chi tiết lịch trực 7 ngày",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DutyDetailDto"
+            }
+          }
+        }
+      },
+      "CreateTravelWorkScheduleDto": {
+        "type": "object",
+        "properties": {
+          "leader": {
+            "type": "string",
+            "example": "96E591E1-81BE-4FA3-844A-0FAE15B60120",
+            "description": "ID người dẫn đầu"
+          },
+          "scheduleType": {
+            "type": "string",
+            "example": "singleDay",
+            "enum": [
+              "singleDay",
+              "multiDay"
+            ],
+            "description": "Loại công tác"
+          },
+          "calendarFormat": {
+            "type": "string",
+            "example": "session",
+            "enum": [
+              "session",
+              "fullDay"
+            ],
+            "description": "Hình thức lịch (chỉ cho singleDay)"
+          },
+          "workDate": {
+            "type": "string",
+            "example": "2026-01-29T10:08:19Z",
+            "description": "Ngày công tác (cho singleDay)"
+          },
+          "fromDate": {
+            "type": "string",
+            "example": "2026-01-28T10:12:56Z",
+            "description": "Ngày bắt đầu (cho multiDay)"
+          },
+          "toDate": {
+            "type": "string",
+            "example": "2026-01-31T10:12:58Z",
+            "description": "Ngày kết thúc (cho multiDay)"
+          },
+          "location": {
+            "type": "string",
+            "example": "LT",
+            "description": "Địa điểm (cho fullDay và multiDay)"
+          },
+          "content": {
+            "type": "string",
+            "example": "Họp giao ban",
+            "description": "Nội dung (cho fullDay và multiDay)"
+          },
+          "morningLocation": {
+            "type": "string",
+            "example": "1901",
+            "description": "Địa điểm buổi sáng (cho session)"
+          },
+          "morningContent": {
+            "type": "string",
+            "example": "Tân cảng",
+            "description": "Nội dung buổi sáng (cho session)"
+          },
+          "afternoonLocation": {
+            "type": "string",
+            "example": "1902",
+            "description": "Địa điểm buổi chiều (cho session)"
+          },
+          "afternoonContent": {
+            "type": "string",
+            "example": "Urenco",
+            "description": "Nội dung buổi chiều (cho session)"
+          }
+        },
+        "required": [
+          "leader",
+          "scheduleType"
+        ]
+      },
+      "DeleteMultipleTravelWorkSchedulesDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "example": [
+              "TWS_1705632000000_A1B2C3D4",
+              "TWS_1705718400000_E5F6G7H8"
+            ],
+            "description": "Danh sách ID các lịch công tác cần xóa",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "UpdateTravelWorkScheduleDto": {
+        "type": "object",
+        "properties": {
+          "leader": {
+            "type": "string",
+            "example": "96E591E1-81BE-4FA3-844A-0FAE15B60120",
+            "description": "ID người dẫn đầu"
+          },
+          "scheduleType": {
+            "type": "string",
+            "example": "singleDay",
+            "enum": [
+              "singleDay",
+              "multiDay"
+            ],
+            "description": "Loại công tác"
+          },
+          "calendarFormat": {
+            "type": "string",
+            "example": "session",
+            "enum": [
+              "session",
+              "fullDay"
+            ],
+            "description": "Hình thức lịch (chỉ cho singleDay)"
+          },
+          "workDate": {
+            "type": "object",
+            "example": "2026-01-29T10:08:19Z",
+            "description": "Ngày công tác (cho singleDay)"
+          },
+          "fromDate": {
+            "type": "object",
+            "example": "2026-01-28T10:12:56Z",
+            "description": "Ngày bắt đầu (cho multiDay)"
+          },
+          "toDate": {
+            "type": "object",
+            "example": "2026-01-31T10:12:58Z",
+            "description": "Ngày kết thúc (cho multiDay)"
+          },
+          "location": {
+            "type": "string",
+            "example": "LT",
+            "description": "Địa điểm (cho fullDay và multiDay)"
+          },
+          "content": {
+            "type": "string",
+            "example": "Họp giao ban",
+            "description": "Nội dung (cho fullDay và multiDay)"
+          },
+          "morningLocation": {
+            "type": "string",
+            "example": "1901",
+            "description": "Địa điểm buổi sáng (cho session)"
+          },
+          "morningContent": {
+            "type": "string",
+            "example": "Tân cảng",
+            "description": "Nội dung buổi sáng (cho session)"
+          },
+          "afternoonLocation": {
+            "type": "string",
+            "example": "1902",
+            "description": "Địa điểm buổi chiều (cho session)"
+          },
+          "afternoonContent": {
+            "type": "string",
+            "example": "Urenco",
+            "description": "Nội dung buổi chiều (cho session)"
+          },
+          "status": {
+            "type": "string",
+            "example": "1",
+            "enum": [
+              "1",
+              "2",
+              "3"
+            ],
+            "description": "Trạng thái: 1=active, 2=locked, 3=deleted"
+          }
+        }
+      },
+      "CreateProcessTemplateDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateProcessTemplateDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateDestroyRecordDto": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "object",
+            "description": "Filter object"
+          },
+          "page": {
+            "type": "string",
+            "description": "Trang hiện tại",
+            "default": "1"
+          },
+          "limit": {
+            "type": "string",
+            "description": "Số bản ghi trên mỗi trang",
+            "default": "20"
+          },
+          "sort": {
+            "type": "object",
+            "description": "Sắp xếp kết quả, ví dụ: {\"userDeadline\":1}"
+          },
+          "processFn": {
+            "type": "string",
+            "description": "Mã danh sách (process function)"
+          }
+        },
+        "required": [
+          "processFn"
+        ]
+      },
+      "RecordExploitationDto": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "object",
+            "description": "Filter object"
+          },
+          "page": {
+            "type": "string",
+            "description": "Trang hiện tại",
+            "default": "1"
+          },
+          "limit": {
+            "type": "string",
+            "description": "Số bản ghi trên mỗi trang",
+            "default": "20"
+          },
+          "sort": {
+            "type": "object",
+            "description": "Sắp xếp kết quả, ví dụ: {\"userDeadline\":1}"
+          },
+          "processFn": {
+            "type": "string",
+            "description": "Mã danh sách (process function)"
+          }
+        },
+        "required": [
+          "processFn"
+        ]
+      },
+      "CreateArchiveRecordDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateRecordStateDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreatePassportDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdatePassportDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateFeedbackSuggestionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFeedbackSuggestionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "DispatchFeedbackDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "RejectFeedbackDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CompleteFeedbackDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "RatingFeedbackDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreatePassportRequestDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdatePassportRequestDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateBpmnDesignDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateBpmnDesignDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateBannerDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "BatchCreateBannersDto": {
+        "type": "object",
+        "properties": {
+          "banners": {
+            "description": "Mảng các banner cần tạo hoặc cập nhật",
+            "example": [
+              {
+                "bannerKey": "banner_top",
+                "imageUrl": "https://example.com/banner1.jpg",
+                "linkUrl": "https://example.com/promo1",
+                "order": 0,
+                "status": 1
+              },
+              {
+                "bannerKey": "banner_middle",
+                "imageUrl": "https://example.com/banner2.jpg",
+                "linkUrl": "https://example.com/promo2",
+                "order": 1,
+                "status": 1
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateBannerDto"
+            }
+          }
+        },
+        "required": [
+          "banners"
+        ]
+      },
+      "CreateAgencyDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateAgencyDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateSettingClearLogDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateStorageConfigDto": {
+        "type": "object",
+        "properties": {
+          "active_type": {
+            "type": "string",
+            "enum": [
+              "filesystem",
+              "minio"
+            ],
+            "description": "Dịch vụ lưu trữ đang hoạt động",
+            "example": "filesystem"
+          },
+          "minio_endpoint": {
+            "type": "string",
+            "description": "Endpoint của MinIO. Bắt buộc nếu active_type là \"minio\"."
+          },
+          "minio_access_key": {
+            "type": "string",
+            "description": "Access Key của MinIO. Bắt buộc nếu active_type là \"minio\"."
+          },
+          "minio_secret_key": {
+            "type": "string",
+            "description": "Secret Key của MinIO. Bắt buộc nếu active_type là \"minio\"."
+          },
+          "minio_bucket": {
+            "type": "string",
+            "description": "Bucket của MinIO. Bắt buộc nếu active_type là \"minio\"."
+          }
+        },
+        "required": [
+          "active_type"
+        ]
+      },
+      "CreateStorageBatchDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateStorageBatchDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ActionProfileStorageDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateBookDocumentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tên sổ văn bản",
+            "example": "Sổ văn bản đến 2024"
+          },
+          "year": {
+            "type": "number",
+            "description": "Năm của sổ",
+            "example": 2024
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Trạng thái hoạt động",
+            "default": true
+          },
+          "type_document": {
+            "type": "string",
+            "description": "Loại văn bản"
+          },
+          "sender_unit": {
+            "type": "string",
+            "description": "Đơn vị gửi"
+          },
+          "to_book_code": {
+            "type": "string",
+            "description": "Mã vào sổ"
+          },
+          "document_field": {
+            "description": "Lĩnh vực văn bản",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "private_level": {
+            "type": "string",
+            "description": "Mức độ riêng tư"
+          },
+          "manager_book": {
+            "description": "Người quản lý sổ",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "book_document_id": {
+            "type": "string",
+            "description": "id sổ văn bản"
+          },
+          "count": {
+            "type": "number",
+            "description": "Số lượng"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateBookDocumentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tên sổ văn bản",
+            "example": "Sổ văn bản đến 2024"
+          },
+          "year": {
+            "type": "number",
+            "description": "Năm của sổ",
+            "example": 2024
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Trạng thái hoạt động",
+            "default": true
+          },
+          "type_document": {
+            "type": "string",
+            "description": "Loại văn bản"
+          },
+          "sender_unit": {
+            "type": "string",
+            "description": "Đơn vị gửi"
+          },
+          "to_book_code": {
+            "type": "string",
+            "description": "Mã vào sổ"
+          },
+          "document_field": {
+            "description": "Lĩnh vực văn bản",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "private_level": {
+            "type": "string",
+            "description": "Mức độ riêng tư"
+          },
+          "manager_book": {
+            "description": "Người quản lý sổ",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "book_document_id": {
+            "type": "string",
+            "description": "id sổ văn bản"
+          },
+          "count": {
+            "type": "number",
+            "description": "Số lượng"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "DeleteBookDocumentsDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateDocDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateDocDtoDraft": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateDocDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateNewsCalendarDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateNewsCalendarDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateMenuManagerDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateMenuManagerDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRoleGroupDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRoleDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreatelistRoleDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdatelistRoleDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateUserColumnConfigDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateCustomThemeDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateCustomThemeDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateDocumentLibraryDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateDocumentLibraryDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateVehicleRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "requestType": {
+            "type": "string",
+            "example": "Đi thành phố"
+          },
+          "priority": {
+            "type": "string",
+            "example": "Bình thường"
+          },
+          "isImportantGuest": {
+            "type": "string",
+            "example": "Có"
+          },
+          "passengerCount": {
+            "type": "number",
+            "example": 1
+          },
+          "departureTime": {
+            "type": "string",
+            "example": "2026-02-10T08:00:00Z"
+          },
+          "returnTime": {
+            "type": "string",
+            "example": "2026-02-10T17:00:00Z"
+          },
+          "departurePoint": {
+            "type": "string",
+            "example": "Số 1 Đại học Bách Khoa"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Số 102 Trần Phú"
+          },
+          "contactPerson": {
+            "type": "string",
+            "example": "Nguyễn Văn A"
+          },
+          "contactPhone": {
+            "type": "string",
+            "example": "0987654321"
+          },
+          "totalPeople": {
+            "type": "number",
+            "example": 1
+          },
+          "purpose": {
+            "type": "string",
+            "example": "Công tác tại chi nhánh"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Ghi chú thêm"
+          }
+        },
+        "required": [
+          "requestType",
+          "priority",
+          "isImportantGuest",
+          "passengerCount",
+          "departureTime",
+          "returnTime",
+          "departurePoint",
+          "destination",
+          "contactPerson",
+          "contactPhone",
+          "purpose"
+        ]
+      },
+      "UpdateVehicleRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "requestType": {
+            "type": "string",
+            "example": "Đi thành phố"
+          },
+          "priority": {
+            "type": "string",
+            "example": "Bình thường"
+          },
+          "isImportantGuest": {
+            "type": "string",
+            "example": "Có"
+          },
+          "passengerCount": {
+            "type": "number",
+            "example": 1
+          },
+          "departureTime": {
+            "type": "string",
+            "example": "2026-02-10T08:00:00Z"
+          },
+          "returnTime": {
+            "type": "string",
+            "example": "2026-02-10T17:00:00Z"
+          },
+          "departurePoint": {
+            "type": "string",
+            "example": "Số 1 Đại học Bách Khoa"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Số 102 Trần Phú"
+          },
+          "contactPerson": {
+            "type": "string",
+            "example": "Nguyễn Văn A"
+          },
+          "contactPhone": {
+            "type": "string",
+            "example": "0987654321"
+          },
+          "totalPeople": {
+            "type": "number",
+            "example": 1
+          },
+          "purpose": {
+            "type": "string",
+            "example": "Công tác tại chi nhánh"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Ghi chú thêm"
+          }
+        }
+      },
+      "DeleteVehicleRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "List of IDs to delete",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "CreateListCardDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateListCardDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateListCarDto": {
+        "type": "object",
+        "properties": {
+          "licensePlate": {
+            "type": "string",
+            "description": "Biển số xe",
+            "example": "51A-123.45"
+          },
+          "carType": {
+            "type": "string",
+            "description": "Loại xe",
+            "example": "7 chỗ"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Hãng xe",
+            "example": "TOYOTA INNOVA"
+          },
+          "seatCount": {
+            "type": "number",
+            "description": "Số chỗ ngồi",
+            "example": 7
+          },
+          "manager": {
+            "type": "string",
+            "description": "Người quản lý",
+            "example": "Nguyễn Văn A"
+          },
+          "statusCar": {
+            "type": "string",
+            "description": "Trạng thái",
+            "example": "Sẵn sàng",
+            "default": "Sẵn sàng"
+          },
+          "note": {
+            "type": "string",
+            "description": "Ghi chú",
+            "example": "Ghi chú"
+          }
+        },
+        "required": [
+          "licensePlate",
+          "carType",
+          "brand",
+          "manager",
+          "statusCar"
+        ]
+      },
+      "UpdateListCarDto": {
+        "type": "object",
+        "properties": {
+          "licensePlate": {
+            "type": "string",
+            "description": "Biển số xe",
+            "example": "51A-123.45"
+          },
+          "carType": {
+            "type": "string",
+            "description": "Loại xe",
+            "example": "7 chỗ"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Hãng xe",
+            "example": "TOYOTA INNOVA"
+          },
+          "seatCount": {
+            "type": "number",
+            "description": "Số chỗ ngồi",
+            "example": 7
+          },
+          "manager": {
+            "type": "string",
+            "description": "Người quản lý",
+            "example": "Nguyễn Văn A"
+          },
+          "statusCar": {
+            "type": "string",
+            "description": "Trạng thái",
+            "example": "Sẵn sàng",
+            "default": "Sẵn sàng"
+          },
+          "note": {
+            "type": "string",
+            "description": "Ghi chú",
+            "example": "Ghi chú"
+          }
+        }
+      },
+      "DeleteListCarDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "example": [
+              "LC-20260303033628-DD8TZLAN"
+            ],
+            "description": "Danh sách ID xe cần xóa",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "CreateListDriverDto": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "Họ và tên tài xế",
+            "example": "Nguyễn Văn A"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Số điện thoại",
+            "example": "0987654321"
+          },
+          "idCard": {
+            "type": "string",
+            "description": "Số CMND/CCCD",
+            "example": "012345678901"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email",
+            "example": "taixe123@gmail.com"
+          },
+          "address": {
+            "type": "string",
+            "description": "Địa chỉ",
+            "example": "Hà Nội"
+          },
+          "licenseNumber": {
+            "type": "string",
+            "description": "Số bằng lái",
+            "example": "GZX123456"
+          },
+          "licenseClass": {
+            "type": "string",
+            "description": "Hạng bằng",
+            "example": "B2"
+          },
+          "licenseIssuedDate": {
+            "type": "string",
+            "description": "Ngày cấp bằng",
+            "example": "2020-01-01"
+          },
+          "note": {
+            "type": "string",
+            "description": "Ghi chú",
+            "example": "Ghi chú"
+          }
+        },
+        "required": [
+          "fullName",
+          "phoneNumber",
+          "idCard",
+          "licenseNumber",
+          "licenseClass",
+          "licenseIssuedDate"
+        ]
+      },
+      "UpdateListDriverDto": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "Họ và tên tài xế",
+            "example": "Nguyễn Văn A"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Số điện thoại",
+            "example": "0987654321"
+          },
+          "idCard": {
+            "type": "string",
+            "description": "Số CMND/CCCD",
+            "example": "012345678901"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email",
+            "example": "taixe123@gmail.com"
+          },
+          "address": {
+            "type": "string",
+            "description": "Địa chỉ",
+            "example": "Hà Nội"
+          },
+          "licenseNumber": {
+            "type": "string",
+            "description": "Số bằng lái",
+            "example": "GZX123456"
+          },
+          "licenseClass": {
+            "type": "string",
+            "description": "Hạng bằng",
+            "example": "B2"
+          },
+          "licenseIssuedDate": {
+            "type": "string",
+            "description": "Ngày cấp bằng",
+            "example": "2020-01-01"
+          },
+          "note": {
+            "type": "string",
+            "description": "Ghi chú",
+            "example": "Ghi chú"
+          }
+        }
+      },
+      "CreateDriverHealthCheckDto": {
+        "type": "object",
+        "properties": {
+          "driverId": {
+            "type": "string",
+            "example": "DR-20260303014836-2SR5BF6L"
+          },
+          "checkupDate": {
+            "type": "string",
+            "example": "2026-03-03"
+          },
+          "attachments": {
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "note": {
+            "type": "string",
+            "example": "Ghi chú khám sức khỏe"
+          }
+        },
+        "required": [
+          "driverId",
+          "checkupDate"
+        ]
+      },
+      "UpdateDriverHealthCheckDto": {
+        "type": "object",
+        "properties": {
+          "driverId": {
+            "type": "string",
+            "example": "DR-20260303014836-2SR5BF6L"
+          },
+          "checkupDate": {
+            "type": "string",
+            "example": "2026-03-03"
+          },
+          "attachments": {
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "note": {
+            "type": "string",
+            "example": "Ghi chú khám sức khỏe"
+          }
+        },
+        "required": [
+          "driverId",
+          "checkupDate"
+        ]
+      },
+      "CreateArchivesDto": {
+        "type": "object",
+        "properties": {
+          "archivesNumber": {
+            "type": "string",
+            "description": "Số và ký hiệu hồ sơ (lấy từ draft)"
+          },
+          "archivesName": {
+            "type": "number",
+            "description": "ID hồ sơ nguồn (Tiêu đề hồ sơ - SELECT từ source_storage_documents)"
+          },
+          "archivesType": {
+            "type": "string",
+            "description": "Loại hồ sơ"
+          },
+          "archivesDeadline": {
+            "type": "string",
+            "description": "Thời hạn bảo quản"
+          },
+          "archivesMode": {
+            "type": "string",
+            "description": "Chế độ sử dụng"
+          },
+          "archivesYear": {
+            "type": "string",
+            "description": "Năm hình thành hồ sơ (ISO date string)"
+          },
+          "archivesOrganizationUnit": {
+            "type": "string",
+            "description": "Phòng ban/Đơn vị chịu trách nhiệm"
+          },
+          "archivesLanguage": {
+            "type": "string",
+            "description": "Ngôn ngữ"
+          },
+          "archivesNote": {
+            "type": "object",
+            "description": "Ghi chú"
+          },
+          "listDocIndex": {
+            "description": "Danh mục tài liệu",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "archivesNumber",
+          "archivesName",
+          "archivesType",
+          "archivesDeadline",
+          "archivesMode",
+          "archivesYear",
+          "archivesOrganizationUnit",
+          "archivesLanguage"
+        ]
+      },
+      "UpdateArchivesDto": {
+        "type": "object",
+        "properties": {
+          "archivesName": {
+            "type": "number",
+            "description": "ID hồ sơ nguồn (Tiêu đề hồ sơ - SELECT từ source_storage_documents)"
+          },
+          "archivesType": {
+            "type": "string",
+            "description": "Loại hồ sơ"
+          },
+          "archivesDeadline": {
+            "type": "string",
+            "description": "Thời hạn bảo quản"
+          },
+          "archivesMode": {
+            "type": "string",
+            "description": "Chế độ sử dụng"
+          },
+          "archivesYear": {
+            "type": "string",
+            "description": "Năm hình thành hồ sơ (ISO date string)"
+          },
+          "archivesOrganizationUnit": {
+            "type": "string",
+            "description": "Phòng ban/Đơn vị chịu trách nhiệm"
+          },
+          "archivesLanguage": {
+            "type": "string",
+            "description": "Ngôn ngữ"
+          },
+          "archivesNote": {
+            "type": "object",
+            "description": "Ghi chú"
+          },
+          "listDocIndex": {
+            "description": "Danh mục tài liệu",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DeleteManyArchivesDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "Danh sách ID hồ sơ cần xóa",
+            "example": [
+              1,
+              2,
+              3
+            ],
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "CreateDocumentIndexDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "ID tạm từ FE (sẽ bỏ qua, BE tự sinh)"
+          },
+          "nameDoc": {
+            "type": "string",
+            "description": "Tên tài liệu"
+          }
+        },
+        "required": [
+          "nameDoc"
+        ]
+      },
+      "UpdateDocumentIndexDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "ID của tài liệu (nếu có và tồn tại trong DB thì cập nhật, không có hoặc không tồn tại thì tạo mới)"
+          },
+          "nameDoc": {
+            "type": "string",
+            "description": "Tên tài liệu"
+          }
+        },
+        "required": [
+          "nameDoc"
+        ]
+      },
+      "CreateYearCategoryDto": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number",
+            "example": 2026,
+            "description": "Year of the category"
+          },
+          "description": {
+            "type": "string",
+            "example": "Description for year 2026"
+          }
+        },
+        "required": [
+          "year"
+        ]
+      },
+      "UpdateYearCategoryDto": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number",
+            "example": 2026,
+            "description": "Year of the category"
+          },
+          "description": {
+            "type": "string",
+            "example": "Description for year 2026"
+          }
+        }
+      },
+      "CreateFileRecordDto": {
+        "type": "object",
+        "properties": {
+          "fileSymbol": {
+            "type": "string",
+            "example": "HSCNTT0012/CNTT",
+            "description": "File number/symbol"
+          },
+          "title": {
+            "type": "string",
+            "example": "Hồ sơ dự án Nâng cấp Hạ tầng Mạng...",
+            "description": "Title of the file"
+          },
+          "yearCategoryId": {
+            "type": "string",
+            "example": "uuid-string",
+            "description": "Year Category ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1",
+              "2"
+            ],
+            "default": "0"
+          }
+        },
+        "required": [
+          "fileSymbol",
+          "title",
+          "yearCategoryId"
+        ]
+      },
+      "UpdateFileRecordDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRecordDocumentDto": {
+        "type": "object",
+        "properties": {
+          "documentSymbol": {
+            "type": "string",
+            "example": "VB001/2025",
+            "description": "Số ký hiệu văn bản"
+          },
+          "documentTitle": {
+            "type": "string",
+            "example": "Về việc triển khai dự án...",
+            "description": "Tiêu đề văn bản"
+          },
+          "fileRecordId": {
+            "type": "string",
+            "example": "file-record-uuid",
+            "description": "ID hồ sơ chứa văn bản này"
+          },
+          "yearCategoryId": {
+            "type": "string",
+            "example": "year-category-uuid",
+            "description": "ID danh mục năm"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1",
+              "2"
+            ],
+            "default": "0",
+            "description": "Trạng thái: 0-Chưa mở, 1-Đã mở, 2-Đã lưu trữ"
+          }
+        },
+        "required": [
+          "documentSymbol",
+          "documentTitle",
+          "yearCategoryId"
+        ]
+      },
+      "UpdateRecordDocumentDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "DeleteMultipleDocumentsDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "example": [
+              "id1",
+              "id2",
+              "id3"
+            ],
+            "description": "Danh sách ID văn bản cần xóa",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "CreatePassportVoucherDto": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+Các đầu API bị ảnh hưởng trực tiếp bởi các thay đổi tối ưu vừa rồi gồm có:
+
+1. 📰 API Tin tức (News) — Liên quan đến Truy vấn hạng 4
+Các API chi tiết/danh sách tin tức:
+GET /news/:id (Xem chi tiết một bài viết)
+GET /news (Lấy danh sách tin tức ở trang quản trị hoặc trang chủ portal)
+Lý do: Khi xem hoặc duyệt các bài viết tin tức, hệ thống chạy hàm enrichNewsWithWorkItems để tính toán các hành động khả dụng (availableActions). Trong hàm này, callback getUsersByRole lấy danh sách toàn bộ người dùng để kiểm tra vai trò duyệt. Việc tối ưu tại đây giúp giảm tải cho toàn bộ các luồng hiển thị và duyệt tin tức.
+2. 📁 API Đồng bộ Nhân sự (HRM Sync) — Liên quan đến Truy vấn hạng 4
+Đầu API:
+POST /hrm/sync (Đồng bộ nhân viên từ local DB sang hệ thống HRM)
+Lý do: Khi kích hoạt tiến trình đồng bộ nhân sự, hàm getEmployeesFromLocalDb tải toàn bộ danh sách users hiện có để làm payload đồng bộ.
+3. 📂 API Dự án (Project) — Liên quan đến Truy vấn hạng 5
+Đầu API:
+GET /project/:id (Lấy thông tin chi tiết một dự án)
+Lý do: Mỗi lần người dùng click xem chi tiết dự án trên giao diện, API này sẽ chạy hàm findOne trong project.service.ts để lấy thông tin. Tại đây, hàm cũ quét toàn bộ bảng organization_units nếu chuỗi organizationUnitId bị trống hoặc chứa chuỗi ID gộp dạng "ID1,ID2". Việc tối ưu giúp API chi tiết dự án phản hồi nhanh hơn rất nhiều.
+4. cron chuyển trạng thái cuộc họp chuyển sang 5' Truy vấn hạng 9
+5. PATCH /task/select-form-doc: (Liên quan đến Truy vấn hạng 11)
+Lý do: API thực hiện gán văn bản đến cho các công việc, gọi hàm patchSelectFormDoc.
+Tối ưu: Loại bỏ việc CAST kiểu Unicode và so khớp chính xác tham số truyền vào dưới dạng VARCHAR để SQL Server thực hiện Index Seek thay vì Index Scan toàn bộ bảng.
+6. Module initialization load cache của MeetingService: (Liên quan đến Truy vấn hạng 13)
+ nâng cron nên 5'
+
+7. Tối ưu: Chuyển đổi query TypeORM sang raw query sử dụng getRawOne, đồng thời nâng khoảng thời gian chạy setInterval từ 3 phút lên 30 phút.
+
+8. Tối ưu danh sách và countTaskApprovePending & countTaskApproveSent: (Liên quan đến Truy vấn hạng 12)
+api/menu-manager/menu-counts?codes=approve,approvalSent
+api/tasks/approve?page=1&limit=25&filter%5BdateSent%5D%5BstartDate%5D=2026-06-01&filter%5BdateSent%5D%5BendDate%5D=2026-07-01&processFn=approvalSent&type=sent
+api/tasks/approve?page=1&limit=25&filter%5BdateSent%5D%5BstartDate%5D=2026-06-01&filter%5BdateSent%5D%5BendDate%5D=2026-07-01&processFn=approve&type=pending
+Lý do: Đếm số lượng công việc phê duyệt trước đây dùng truy vấn bắt đầu từ bảng task và cạy EXISTS kiểm tra audit (sử dụng subquery MAX(id) và so khớp CAST(task.id AS NVARCHAR(64)) trên từng dòng). Điều này gây scan chỉ mục khi số lượng dòng lớn.
+Tối ưu: Thay đổi cấu trúc truy vấn bằng cách xuất phát từ bảng audit (lọc theo receiver/@userId hoặc created_by trước vì tập kết quả rất nhỏ), sau đó INNER JOIN với bảng task theo TRY_CAST(a.document_id AS BIGINT) = t.id để kiểm tra trạng thái task. Sử dụng NOT EXISTS thay cho subquery MAX(id) để lấy bản ghi audit mới nhất một cách tối ưu nhất.
+
+
+9. Tối ưu Truy vấn hạng 44:
+- Đầu API: POST /work-items/:docId/:workItemId/viewer (khi đánh dấu đã xem) hoặc API liên quan đến các hàm checkViewerPermission.
+- Lý do: Truy vấn lấy role_process, stage_status từ bảng incomming_assignment theo document_id và receiver_id. Khi bảng lớn và thiếu chỉ mục phù hợp, hệ thống SQL Server phải quét bảng hoặc quét chỉ mục chung, gây lãng phí bộ nhớ và CPU.
+- Tối ưu: Khuyến nghị bổ sung Composite Index: CREATE NONCLUSTERED INDEX IX_incomming_assignment_Doc_Receiver ON DiOffice.dbo.incomming_assignment(document_id, receiver) INCLUDE (role_process, stage_status). Điều này giúp các truy vấn kiểm tra quyền xem hoặc lịch sử xử lý đạt được Index Seek.
+
+10. Tối ưu Truy vấn hạng 74:
+- Đầu API: GET /api/menu-manager/menu-counts?codes=nhanDeBietVB (Hàm đếm số lượng văn bản nhận để biết countOutgoingDocumentsViewerDynamic).
+- Lý do: Sử dụng hàm OPENJSON(outgoing_documents.know_receivers) trong mệnh đề WHERE EXISTS để kiểm tra user ID. Vì JSON parse không thể sử dụng index (non-sargable), truy vấn này gây ra hơn 1,000,000 Logical Reads mỗi lần chạy do quét toàn bảng.
+- Tối ưu: Đề xuất thay đổi cấu trúc thiết kế cơ sở dữ liệu. Loại bỏ việc lưu mảng know_receivers dưới dạng JSON. Thay vào đó, tạo một bảng trung gian riêng biệt (vd: outgoing_document_know_receivers với document_id và user_id) và đặt Index trên user_id. Truy vấn lúc này chỉ cần sử dụng INNER JOIN, giúp cải thiện hàng ngàn lần hiệu năng.
+
+11. Tối ưu Truy vấn hạng 89:
+- Đầu API: GET /api/documents/getAllByText (Tìm kiếm văn bản toàn văn ).
+- Lý do: Sử dụng JOIN giữa audit và các bảng incomming_documents / outgoing_documents xử lý lọc theo 1 tháng gần đây thôi 
+12. Tối ưu Truy vấn hạng 8, 14, 20, 24,68:
+- Đầu API: 
+  + GET /api/tasks/approve (Danh sách công việc chờ duyệt / đã gửi duyệt)
+  + GET /api/menu-manager/menu-counts?codes=approve,approvalSent (Đếm số lượng công việc)
+- Lý do: Query danh sách và đếm số lượng công việc phê duyệt (Hạng 8, 14, 20, 24) sử dụng các subquery riêng biệt trong SELECT/WHERE để quét bảng audit bằng điều kiện document_id mà không lọc theo type_document, kết hợp subquery MAX(id) gây chậm hiệu năng.
+- Tối ưu: 
+  + Đã được sửa bằng cách tối ưu hóa hàm `buildApproveBaseQuery` trong `task.repository.ts`, chuyển đổi MAX(id) thành `NOT EXISTS` kết hợp giới hạn `a.type_document IN ('TaskDocument', 'TaskMeeting', 'TaskMetting', 'TaskUser', 'TaskProjectUnit', 'TaskManyLevelUnit', 'TaskProjectCompany', 'TaskGeneral', 'TaskMultiPersional', 'TaskManyUnit', 'TaskProject')`.
+  + Phía SELECT cũng bổ sung điều kiện lọc tương tự để SQL Server sử dụng index tốt nhất của audit.
+  + Giải pháp triệt để: Tránh dùng nhiều subquery độc lập trong SELECT. Nên chuyển sang sử dụng OUTER APPLY (trong SQL Server) hoặc viết raw query JOIN một lần với bảng tạm GROUP BY document_id để lấy toàn bộ thông tin audit mới nhất.
+
+13. Tối ưu Truy vấn hạng 79:
+- Đầu API: GET /api/menu-manager/menu-counts?codes=nhanDeBietVB (Liên quan đến đếm số lượng văn bản nhận để biết).
+- Lý do: Phép kiểm tra trạng thái cuối cùng trên bảng audit thiếu điều kiện type_document dẫn tới việc SQL Server không sử dụng được index tối ưu, gây ra 124.195 logical reads trên audit. Ngoài ra, việc dùng OPENJSON trên know_receivers khiến SQL Server phải duyệt và parse JSON toàn bảng gây ra 343.303 - 816.270 lob logical reads.
+- Tối ưu:
+  + Code Node.js đã được tối ưu bằng cách thêm `a_sub.type_document = 'OutgoingDocument'` vào audit subquery (giúp số lượt đọc logic trên audit giảm 393 lần, từ 124.195 xuống chỉ còn 316).
+  + Thêm bộ lọc thô `know_receivers LIKE '%{userId}%'` trước khi `OPENJSON` để hạn chế số dòng phải parse JSON.
+  + Đề xuất lâu dài: Tách cột `know_receivers` thành bảng riêng `outgoing_document_know_receivers` để loại bỏ hoàn toàn LOB logical reads (về 0).
+
+14. Tối ưu Truy vấn hạng 43:
+- Đầu API: GET GET /api/documents/outgoing/list/document-signer-process (Tab Trình ký Văn bản đi như Soạn thảo DuThaoCB, Đã trình ký daTrinhKyCB, Chờ ban hành ChobanHanhTP...).
+- Lý do: Phép CROSS APPLY và SELECT subquery liên quan đến lịch sử audit không lọc theo `type_document = 'OutgoingDocument'`, làm SQL Server phải quét tất cả các loại bản ghi audit (văn bản đến, cuộc họp, công việc...) trùng ID, dẫn đến 1.214.538 logical reads.
+- Tối ưu: Bổ sung điều kiện `type_document = 'OutgoingDocument'` vào các block chọc vào bảng `audit` trong file `src/outgoing-documents/outgoing-documents.service.ts` và `src/database/sqlRepo.mssql.ts`.
+
+15. Tối ưu Truy vấn hạng 22, 23, 25, 27, 28, 29, 30, 31 & 36:
+- Đầu API: GET /notifications (Lấy danh sách thông báo của người dùng).
+- Lý do: Các truy vấn thông báo liên quan đến `outgoing_documents`, `incomming_documents`, và `outgoing_current_state` bị chậm do driver Node.js `mssql` mặc định truyền tham số dưới dạng `NVARCHAR` (Unicode), gây ra hiện tượng Chuyển đổi kiểu dữ liệu ngầm định (Implicit Conversion) trên các cột `VARCHAR` `document_id`. Điều này ép SQL Server chạy Index Scan/Table Scan (tốn từ 1,002 -> 2,185 logical reads) thay vì Index Seek. Các hạng khác nhau chỉ do số lượng tham số động (`IN (@in_0, @in_1,...)` hoặc `IN (@out_0, @out_1,...)`) tùy theo trang thông báo.
+- Tối ưu: Cập nhật hàm `buildQuery` trong file `src/notifycation/notification.service.ts` để ép kiểu dữ liệu parameter gửi lên SQL Server khớp kiểu `VarChar` (`VarChar(100)`). Số lượt đọc logic giảm mạnh (giảm tới 80 - 180 lần) và thời gian phản hồi giảm về 0ms.
+
+16. Tối ưu Truy vấn hạng 38:
+- Đầu API: Các API Tin tức (`GET /news`, news-workflow) và API Hộ chiếu/Đoàn ra (`GET /passports`, passport-requests) khi tải danh sách đính kèm hàng loạt (Batch).
+- Lý do: Truy vấn tìm file đính kèm từ `file_relations` ghép sang `files` theo danh sách `object_id` bị chậm. Cột `object_type` và `object_id` của bảng `file_relations` dưới DB có kiểu dữ liệu là `VARCHAR(50)`, nhưng code Node.js truyền mặc định kiểu `NVARCHAR`, làm lệch kiểu và vô hiệu hóa Index Seek trên index `IX_file_relations_status`. Đồng thời, phép `ORDER BY f.created_at DESC` khiến SQL Server chọn sai kế hoạch (Index Scan toàn bộ bảng `file_relations` tốn 440 -> 54,122 logical reads tùy tập dữ liệu).
+- Tối ưu: Cập nhật hàm `getFilesByObjectIds` trong file `src/files-managerment/repositories/files.repository.ts` ép kiểu parameter về đúng `sql.VarChar(50)` và bổ sung Query Hint `WITH (FORCESEEK)` cho bảng `file_relations` để ép SQL Server tìm kiếm trực tiếp qua Index Seek.
+
+
+
+
+
+
+
+
+
+
+
+Thứ tự xử lý	STT gốc	Lý do
+1	1	Total Time cao nhất
+2	2	Count rất lớn + Total cao
+3	6	47.390 lần gọi
+4	5	Total cao + Count cao
+5	4	Total cao
+6	7	238.273 lần gọi
+7	9	Reads rất lớn
+8	11	Total cao
+9	13	Reads cao
+10	10	Total cao
+11	15	Total cao
+12	18	Total cao
+13	21	Reads cao
+14	34	10.019 lần gọi
+15	40	9.237 lần gọi
+16	35	Reads cao
+17	50	Query nhanh nhưng dùng nhiều
+18	52	23.778 lần gọi
+19	55	Reads cao
+20	58	Reads cao
+Sau đó mới xử lý các query chậm (Avg Time rất cao)
+Thứ tự	STT gốc
+21	73
+22	74
+23	44
+24	89
+25	20
+26	12
+27	79
+28	24
+29	8
+30	14
+31	43
+32	46
+33	19
+34	68
+35	84
+36	98
+37	87
+38	93
+39	95
+40	96
+41	97

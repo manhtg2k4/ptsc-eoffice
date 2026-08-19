@@ -1,0 +1,27 @@
+import React from "react";
+import CustomDialog from "@components/CustomDialog/CustomDialog";
+import { Typography } from "@mui/material";
+import PropTypes from "prop-types";
+
+const DeleteDialog = ({ open, onClose, onConfirm, selectedIds }) => (
+  <CustomDialog
+    open={open}
+    onClose={onClose}
+    onSave={onConfirm}
+    title="Xác nhận xóa"
+    type="delete"
+  >
+    <Typography>
+      Bạn có chắc chắn muốn xóa {selectedIds?.length > 1 ? `${selectedIds.length} bản ghi` : "bản ghi này"} không?
+    </Typography>
+  </CustomDialog>
+);
+
+DeleteDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  selectedIds: PropTypes.array.isRequired,
+};
+
+export default DeleteDialog;

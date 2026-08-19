@@ -1,0 +1,486 @@
+/* Xóa outline của SVG container */
+svg:focus,
+svg:focus-visible {
+  outline: none !important;
+}
+
+/* Light Mode - Default */
+.djs-context-pad,
+.djs-popup {
+  background-color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.djs-context-pad .entry,
+.djs-popup .entry {
+  color: #333333 !important;
+}
+
+.djs-context-pad .entry:hover,
+.djs-popup .entry:hover {
+  background-color: #f5f5f5 !important;
+}
+
+/* Dark Mode - Multiple selectors to ensure override */
+.dark-mode .djs-context-pad,
+.dark-mode .djs-popup,
+.bpmn-container.dark-mode .djs-context-pad,
+.bpmn-container.dark-mode .djs-popup,
+[data-theme="dark"] .djs-context-pad,
+[data-theme="dark"] .djs-popup {
+  background-color: #2C3E50 !important; /* Nền giống palette */
+  border: 1px solid #34495E !important; /* Viền giống palette */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 4px;
+}
+
+.dark-mode .djs-context-pad .entry,
+.dark-mode .djs-popup .entry,
+.bpmn-container.dark-mode .djs-context-pad .entry,
+.bpmn-container.dark-mode .djs-popup .entry,
+[data-theme="dark"] .djs-context-pad .entry,
+[data-theme="dark"] .djs-popup .entry {
+  background-color: transparent !important; /* Nền trong suốt để lấy màu của cha */
+  border-radius: 4px;
+  color: #FFFFFF !important; /* Màu chữ/icon trắng */
+}
+
+.dark-mode .djs-context-pad .entry:hover,
+.dark-mode .djs-popup .entry:hover,
+.bpmn-container.dark-mode .djs-context-pad .entry:hover,
+.bpmn-container.dark-mode .djs-popup .entry:hover {
+  background-color: #34495E !important; /* Màu hover giống palette */
+}
+
+/* Icon colors in dark mode - CRITICAL */
+.dark-mode .djs-context-pad .entry .bpmn-icon-trash,
+.bpmn-container.dark-mode .djs-context-pad .entry .bpmn-icon-trash {
+  filter: invert(1); /* Đảo màu icon thùng rác từ đen sang trắng */
+}
+
+/* Đảm bảo các icon khác cũng có màu trắng */
+.dark-mode .djs-context-pad .entry::before,
+.bpmn-container.dark-mode .djs-context-pad .entry::before {
+  color: #FFFFFF !important;
+}
+
+/* Palette (left sidebar) */
+.bpmn-container:not(.dark-mode) .djs-palette {
+  background-color: #ffffff !important;
+  border-right: 1px solid #e0e0e0 !important;
+}
+
+.dark-mode .djs-palette,
+.bpmn-container.dark-mode .djs-palette,
+[data-theme="dark"] .djs-palette {
+  background-color: #2C3E50 !important; /* Xanh đen đậm */
+  border: 1px solid #34495E !important; /* Xanh đen nhạt hơn một chút */
+  border-radius: 4px;
+}
+
+.djs-palette {
+  background-color: inherit !important;
+}
+
+.bpmn-container:not(.dark-mode) .djs-palette .entry {
+  color: #ffffff !important;
+}
+
+.dark-mode .djs-palette .entry,
+.bpmn-container.dark-mode .djs-palette .entry,
+[data-theme="dark"] .djs-palette .entry {
+  color: #ffffff !important;
+}
+
+/* .djs-palette .entry:hover {
+  background-color: #f5f5f5 !important;
+} */
+
+.dark-mode .djs-palette .entry:hover,
+.bpmn-container.dark-mode .djs-palette .entry:hover {
+  background-color: #34495E !important; /* Xanh đen nhạt */
+}
+
+.dark-mode .djs-palette .entry svg,
+.dark-mode .djs-palette .entry svg path,
+.dark-mode .djs-palette .entry svg circle,
+.dark-mode .djs-palette .entry svg rect,
+.dark-mode .djs-palette .entry svg polygon,
+.dark-mode .djs-palette .entry svg polyline,
+.dark-mode .djs-palette .entry svg line,
+.bpmn-container.dark-mode .djs-palette .entry svg,
+.bpmn-container.dark-mode .djs-palette .entry svg path,
+.bpmn-container.dark-mode .djs-palette .entry svg circle,
+.bpmn-container.dark-mode .djs-palette .entry svg rect,
+.bpmn-container.dark-mode .djs-palette .entry svg polygon,
+.bpmn-container.dark-mode .djs-palette .entry svg polyline,
+.bpmn-container.dark-mode .djs-palette .entry svg line {
+  fill: #FFFFFF !important; /* Trắng */
+  stroke: #FFFFFF !important; /* Trắng */
+  color: #FFFFFF !important;
+}
+
+.dark-mode .djs-palette .entry svg * {
+  fill: #FFFFFF !important; /* Trắng */
+  stroke: #FFFFFF !important; /* Trắng */
+  color: #FFFFFF !important;
+}
+
+.bpmn-container.dark-mode .djs-palette .entry svg * {
+  fill: #FFFFFF !important; /* Trắng */
+  stroke: #FFFFFF !important; /* Trắng */
+  color: #FFFFFF !important;
+}
+
+/* Mini toolbar (khi click vào element) */
+.djs-direct-editing-content {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  color: #333333 !important;
+}
+
+.dark-mode .djs-direct-editing-content,
+.bpmn-container.dark-mode .djs-direct-editing-content {
+  background-color: #1e293b !important;
+  border: 1px solid #475569 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Search pad */
+.djs-search-container {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.dark-mode .djs-search-container,
+.bpmn-container.dark-mode .djs-search-container {
+  background-color: #1e293b !important;
+  border: 1px solid #475569 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .djs-search-container input,
+.bpmn-container.dark-mode .djs-search-container input {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #475569 !important;
+}
+
+/* Tooltips */
+.djs-tooltip {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .djs-tooltip,
+.bpmn-container.dark-mode .djs-tooltip {
+  background-color: #64748b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Context menu separator */
+.djs-context-pad .separator,
+.djs-popup .separator {
+  border-top: 1px solid #e0e0e0 !important;
+}
+
+.dark-mode .djs-context-pad .separator,
+.dark-mode .djs-popup .separator,
+.bpmn-container.dark-mode .djs-context-pad .separator,
+.bpmn-container.dark-mode .djs-popup .separator {
+  border-top: 1px solid #475569 !important;
+}
+
+/* Remove color property from palette entry and toggle */
+.djs-palette .entry,
+.djs-palette .djs-palette-toggle {
+  color: inherit !important;
+}
+
+/* FORCE DARK MODE PALETTE - Override all light mode rules */
+.bpmn-container.dark-mode .djs-palette .entry {
+  color: #ffffff !important;
+}
+
+.dark-mode .djs-palette .entry {
+  color: #ffffff !important;
+}
+
+.djs-palette {
+  /* ✅ Sử dụng biến CSS để lấy màu từ theme */
+  background-color: var(--palette-background-color) !important;
+  border-color: var(--palette-border-color) !important;
+  border-radius: 4px; /* Thêm bo góc cho mềm mại */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ */
+}
+
+/* Style cho các icon bên trong palette */
+.djs-palette .entry {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.djs-palette .entry:hover {
+  background-color: var(--bpp-hover-background-color, #f0f0f0); /* Dùng lại biến có sẵn */
+}
+
+/* Style cho Pool/Participant để nhận biến CSS */
+.djs-shape[data-element-id*="Participant"] .djs-visual > rect {
+  fill: var(--bpmn-participant-fill-color, #ffffff) !important;
+  stroke: var(--bpmn-participant-stroke-color, #000000) !important; /* Sử dụng biến riêng cho viền Participant */
+}
+
+/* Style cho viền của các shape để nhận biến CSS */
+.djs-shape .djs-visual > :first-child {
+  /* Ensure stroke is applied consistently, but allow participant to override fill */
+  stroke: var(--bpmn-element-stroke-color, #000000) !important;
+}
+
+/* Style cho các đường nối (connection/sequence flow) */
+.djs-connection .djs-visual > path {
+    stroke: var(--bpmn-element-stroke-color, #000000) !important;
+}
+
+/* Override tất cả text trong BPMN shapes để có font-weight normal */
+.djs-element text,
+.djs-element tspan,
+.djs-element textPath,
+.djs-label text,
+.djs-label tspan {
+  fill: #222222 !important;
+  font-weight: normal !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+}
+
+/* Đảm bảo text trong dark mode vẫn giữ màu #222222 */
+.dark-mode .djs-element text,
+.dark-mode .djs-element tspan,
+.dark-mode .djs-element textPath,
+.dark-mode .djs-label text,
+.dark-mode .djs-label tspan,
+.bpmn-container.dark-mode .djs-element text,
+.bpmn-container.dark-mode .djs-element tspan,
+.bpmn-container.dark-mode .djs-label text {
+  fill: #222222 !important;
+  font-weight: normal !important;
+}
+
+/* ✅ Text trong Lane/Participant - ĐỔI SANG MÀU TRẮNG ở dark mode */
+.dark-mode .djs-shape[data-element-id*="Lane"] text,
+.dark-mode .djs-shape[data-element-id*="Lane"] tspan,
+.dark-mode .djs-shape[data-element-id*="Participant"] text,
+.dark-mode .djs-shape[data-element-id*="Participant"] tspan,
+.bpmn-container.dark-mode .djs-shape[data-element-id*="Lane"] text,
+.bpmn-container.dark-mode .djs-shape[data-element-id*="Lane"] tspan,
+.bpmn-container.dark-mode .djs-shape[data-element-id*="Participant"] text,
+.bpmn-container.dark-mode .djs-shape[data-element-id*="Participant"] tspan {
+  fill: #FFFFFF !important;
+  font-weight: normal !important;
+}
+
+/* ✅ Text của connection labels (sequence flow) - ĐỔI SANG MÀU TRẮNG ở dark mode */
+.dark-mode .djs-label text,
+.dark-mode .djs-label tspan,
+.bpmn-container.dark-mode .djs-label text,
+.bpmn-container.dark-mode .djs-label tspan {
+  fill: #FFFFFF !important;
+  font-weight: normal !important;
+}
+
+/* Main properties panel container */
+.dark-mode .bio-properties-panel,
+.bpmn-container.dark-mode .bio-properties-panel,
+[data-theme="dark"] .bio-properties-panel {
+  background-color: #2C3E50 !important;
+  color: #FFFFFF !important;
+  border-left: 1px solid #34495E !important;
+}
+
+/* Panel header */
+.dark-mode .bio-properties-panel-header,
+.bpmn-container.dark-mode .bio-properties-panel-header {
+  background-color: #2C3E50 !important;
+  border-bottom: 1px solid #34495E !important;
+  color: #FFFFFF !important;
+}
+
+/* Groups and sections */
+.dark-mode .bio-properties-panel-group,
+.dark-mode .bio-properties-panel-group-header,
+.bpmn-container.dark-mode .bio-properties-panel-group,
+.bpmn-container.dark-mode .bio-properties-panel-group-header {
+  background-color: #2C3E50 !important;
+  border-color: #34495E !important;
+  color: #FFFFFF !important;
+}
+
+/* Entry fields */
+.dark-mode .bio-properties-panel-entry,
+.bpmn-container.dark-mode .bio-properties-panel-entry {
+  background-color: #2C3E50 !important;
+  color: #FFFFFF !important;
+}
+
+/* Input fields, textareas, selects */
+.dark-mode .bio-properties-panel input,
+.dark-mode .bio-properties-panel textarea,
+.dark-mode .bio-properties-panel select,
+.bpmn-container.dark-mode .bio-properties-panel input,
+.bpmn-container.dark-mode .bio-properties-panel textarea,
+.bpmn-container.dark-mode .bio-properties-panel select {
+  background-color: #34495E !important;
+  color: #FFFFFF !important;
+  border: 1px solid #475569 !important;
+}
+
+.dark-mode .bio-properties-panel input:focus,
+.dark-mode .bio-properties-panel textarea:focus,
+.dark-mode .bio-properties-panel select:focus,
+.bpmn-container.dark-mode .bio-properties-panel input:focus,
+.bpmn-container.dark-mode .bio-properties-panel textarea:focus,
+.bpmn-container.dark-mode .bio-properties-panel select:focus {
+  background-color: #3d5a73 !important;
+  border-color: #5a7a99 !important;
+  outline: none !important;
+}
+
+/* Labels */
+.dark-mode .bio-properties-panel label,
+.dark-mode .bio-properties-panel-label,
+.bpmn-container.dark-mode .bio-properties-panel label,
+.bpmn-container.dark-mode .bio-properties-panel-label {
+  color: #B0BEC5 !important;
+}
+
+/* Buttons */
+.dark-mode .bio-properties-panel button,
+.bpmn-container.dark-mode .bio-properties-panel button {
+  background-color: #34495E !important;
+  color: #FFFFFF !important;
+  border: 1px solid #475569 !important;
+}
+
+.dark-mode .bio-properties-panel button:hover,
+.bpmn-container.dark-mode .bio-properties-panel button:hover {
+  background-color: #3d5a73 !important;
+}
+
+/* Collapsible sections */
+.dark-mode .bio-properties-panel-collapsible-entry-header,
+.bpmn-container.dark-mode .bio-properties-panel-collapsible-entry-header {
+  background-color: #2C3E50 !important;
+  color: #FFFFFF !important;
+  border-bottom: 1px solid #34495E !important;
+}
+
+/* Scrollbar cho properties panel trong dark mode */
+.dark-mode .bio-properties-panel::-webkit-scrollbar,
+.bpmn-container.dark-mode .bio-properties-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark-mode .bio-properties-panel::-webkit-scrollbar-track,
+.bpmn-container.dark-mode .bio-properties-panel::-webkit-scrollbar-track {
+  background: #2C3E50;
+}
+
+.dark-mode .bio-properties-panel::-webkit-scrollbar-thumb,
+.bpmn-container.dark-mode .bio-properties-panel::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+.dark-mode .bio-properties-panel::-webkit-scrollbar-thumb:hover,
+.bpmn-container.dark-mode .bio-properties-panel::-webkit-scrollbar-thumb:hover {
+  background: #5a7a99;
+}
+
+/* Dropdown menus trong properties panel */
+.dark-mode .bio-properties-panel .djs-popup,
+.bpmn-container.dark-mode .bio-properties-panel .djs-popup {
+  background-color: #2C3E50 !important;
+  border: 1px solid #34495E !important;
+}
+
+.dark-mode .bio-properties-panel .djs-popup .entry,
+.bpmn-container.dark-mode .bio-properties-panel .djs-popup .entry {
+  color: #FFFFFF !important;
+}
+
+.dark-mode .bio-properties-panel .djs-popup .entry:hover,
+.bpmn-container.dark-mode .bio-properties-panel .djs-popup .entry:hover {
+  background-color: #34495E !important;
+}
+
+/* ===== ICONS IN PROPERTIES PANEL - DARK MODE ===== */
+
+/* Tất cả các icon SVG trong properties panel */
+.dark-mode .bio-properties-panel svg,
+.dark-mode .bio-properties-panel svg path,
+.dark-mode .bio-properties-panel svg circle,
+.dark-mode .bio-properties-panel svg rect,
+.dark-mode .bio-properties-panel svg polygon,
+.dark-mode .bio-properties-panel svg polyline,
+.dark-mode .bio-properties-panel svg line,
+.bpmn-container.dark-mode .bio-properties-panel svg,
+.bpmn-container.dark-mode .bio-properties-panel svg path,
+.bpmn-container.dark-mode .bio-properties-panel svg circle,
+.bpmn-container.dark-mode .bio-properties-panel svg rect,
+.bpmn-container.dark-mode .bio-properties-panel svg polygon,
+.bpmn-container.dark-mode .bio-properties-panel svg polyline,
+.bpmn-container.dark-mode .bio-properties-panel svg line {
+  fill: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+/* Icon trong các nút button */
+.dark-mode .bio-properties-panel button svg,
+.dark-mode .bio-properties-panel button svg *,
+.bpmn-container.dark-mode .bio-properties-panel button svg,
+.bpmn-container.dark-mode .bio-properties-panel button svg * {
+  fill: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Icon trong các entry/group header (mũi tên expand/collapse) */
+.dark-mode .bio-properties-panel-group-header svg,
+.dark-mode .bio-properties-panel-entry svg,
+.dark-mode .bio-properties-panel-collapsible-entry-header svg,
+.bpmn-container.dark-mode .bio-properties-panel-group-header svg,
+.bpmn-container.dark-mode .bio-properties-panel-entry svg,
+.bpmn-container.dark-mode .bio-properties-panel-collapsible-entry-header svg {
+  fill: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Icon trong các nút action (add, remove, edit, etc.) */
+.dark-mode .bio-properties-panel-entry-action svg,
+.dark-mode .bio-properties-panel-list-entry-action svg,
+.bpmn-container.dark-mode .bio-properties-panel-entry-action svg,
+.bpmn-container.dark-mode .bio-properties-panel-list-entry-action svg {
+  fill: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* Đảm bảo tất cả các thành phần con của SVG đều có màu trắng */
+.dark-mode .bio-properties-panel svg *,
+.bpmn-container.dark-mode .bio-properties-panel svg * {
+  fill: inherit !important;
+  stroke: inherit !important;
+}
+
+/* Icon filter/invert cho các trường hợp đặc biệt */
+.dark-mode .bio-properties-panel .bpmn-icon,
+.bpmn-container.dark-mode .bio-properties-panel .bpmn-icon {
+  filter: invert(1) brightness(2);
+}
+
+/* Icon trong dropdown/select */
+.dark-mode .bio-properties-panel select option,
+.bpmn-container.dark-mode .bio-properties-panel select option {
+  color: #FFFFFF !important;
+  background-color: #34495E !important;
+}
+

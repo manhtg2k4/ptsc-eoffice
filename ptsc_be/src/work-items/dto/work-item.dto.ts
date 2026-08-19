@@ -1,0 +1,94 @@
+// src/work-items/dto/process-work-item.dto.ts
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsOptional, IsObject, IsArray, IsEmpty, IsNotEmpty } from 'class-validator';
+
+export class WorkItemDto {
+    @ApiProperty({ description: 'Action code (e.g., TRINH_LD, TRA_LAI)', required: true })
+    @IsString()
+    @IsNotEmpty()
+    actionCode: string;
+
+    @ApiProperty({ description: 'User ID performing the action', required: true })
+    @IsString()
+    userId: string;
+
+    @ApiProperty({ description: 'Display name of the user', required: true })
+    @IsString()
+    displayName: string;
+
+    @ApiProperty({ description: 'ID of the user to assign the next task to', required: false })
+    @IsString()
+    @IsNotEmpty()
+    assignToUserId: string;
+
+    @ApiProperty({ description: 'Additional data for inclusive gateways or other logic', required: false })
+    @IsObject()
+    @IsOptional()
+    selections?: any[];
+
+    @ApiProperty({ description: 'Additional data for inclusive gateways or other logic', required: false })
+    @IsArray()
+    @IsOptional()
+    assignments?: any[];
+
+    @ApiProperty({ description: 'Deadline of employee in work', required: false })
+    @IsString()
+    @IsOptional()
+    deadline?: string;
+
+    @ApiProperty({ description: 'Content of emloyee in work', required: false })
+    @IsString()
+    @IsOptional()
+    note?: string;
+
+
+    @ApiProperty({ description: 'roles target in work', required: false })
+    @IsString()
+    @IsNotEmpty()
+    roles: string;
+}
+export class WorkItemTransferDto {
+    @ApiProperty({ description: 'Action code (e.g., TRINH_LD, TRA_LAI)', required: true })
+    @IsString()
+    @IsNotEmpty()
+    actionCode: string;
+
+    @ApiProperty({ description: 'User ID performing the action', required: true })
+    @IsString()
+    userId: string;
+
+    @ApiProperty({ description: 'Display name of the user', required: true })
+    @IsString()
+    displayName: string;
+
+    @ApiProperty({ description: 'ID of the user to assign the next task to', required: false })
+    @IsArray()
+    @IsNotEmpty()
+    assignToUserId: string[];
+
+    @ApiProperty({ description: 'Additional data for inclusive gateways or other logic', required: false })
+    @IsObject()
+    @IsOptional()
+    selections?: any[];
+
+    @ApiProperty({ description: 'Additional data for inclusive gateways or other logic', required: false })
+    @IsArray()
+    @IsOptional()
+    assignments?: any[];
+
+    @ApiProperty({ description: 'Deadline of employee in work', required: false })
+    @IsString()
+    @IsOptional()
+    deadline?: string;
+
+    @ApiProperty({ description: 'Content of emloyee in work', required: false })
+    @IsString()
+    @IsOptional()
+    note?: string;
+
+
+    @ApiProperty({ description: 'roles target in work', required: false })
+    @IsString()
+    @IsNotEmpty()
+    roles: string;
+}

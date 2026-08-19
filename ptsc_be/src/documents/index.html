@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Test HTTP Range Video</title>
+</head>
+
+<body>
+    <h2>Test HTTP Range / 206 Partial Content</h2>
+
+    <video width="800" controls preload="metadata" src="http://192.168.0.187:3156/api/files/view/14794">
+        Trình duyệt không hỗ trợ video
+    </video>
+
+    <p>
+        👉 Mở DevTools → Network → kéo thanh tua video <br />
+        👉 Kiểm tra request có <b>Range</b> và response là <b>206</b>
+    </p>
+</body>
+
+</html>

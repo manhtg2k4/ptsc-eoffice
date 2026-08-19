@@ -1,0 +1,238 @@
+const meetingDetail = {
+        id: meeting.id,
+        title: meeting.title,
+        content: meeting.content,
+        meetingDate: meeting.meetingDate,
+        meetingTime: meeting.meetingTime,
+        meetingMode: meeting.meetingMode,
+        isCompany: meeting.isCompany,
+        guests: allGuests,
+        status: meeting.status,
+        statusCode: meeting.statusCode,
+        bpmnVersion: meeting.bpmnVersion,
+        meetingType: meetingTypeTitle,
+        priority: priorityTitle,
+        directCommand: meeting.directCommand,
+        chairmanId: chairmanDetail[0]?.userId || null,
+        secretaryId: secretaryDetail[0]?.userId || null,
+        onlineMeeting: meeting.onlineMeeting || null,
+        meetingState: meeting.meetingState,
+        attendanceLocked: meeting.attendanceLocked,
+        meetingStartTime: meeting.startedAt,
+        isAssigningSeat: meeting.isAssigningSeat,
+        meetingEndTime: meeting.endedAt,
+        meetingStatusStatistics: {},
+        seatStatistics: {
+          totalParticipants: totalParticipantsCount,
+          totalGuests: totalGuestsCount,
+          totalPeople: totalPeople,
+          totalSeats: totalSeats,
+          isEnoughSeat: !isEnoughSeat
+        },
+        isRejectUser,
+        isInsufficient: !isEnoughSeat,
+        recurrence: buildRecurrence(
+          meeting.recurrence,
+          recurrenceTypeTitle
+        ),
+        roomIds: roomIdsArray.map((roomId) => ({
+          ...roomMap[roomId],
+          count: participantCounts[roomId] || 0,
+          hasAssigned: (participantCounts[roomId] || 0) > 0,
+        })),
+
+        createdAt: normalizeDateValueHHmmDDMMYYYY(meeting.createdAt),
+        updatedAt: normalizeDateValueHHmmDDMMYYYY(meeting.updatedAt),
+
+        tasks: this.mapTasksToDtoV2(meetingTasks),
+
+        // Chairman & Secretary lấy từ participant của unit ảo
+        chairman: chairmanDetail,
+        secretary: secretaryDetail,
+
+        // Units (chỉ các unit thật, không bao gồm unit ảo)
+        units: Object.values(
+          (meeting.units ?? [])
+            .map((unit) => {
+              const isUnitVirtual =
+                unit.unitId === 'CHAIRMAN_UNIT' ||
+                unit.unitId === 'SECRETARY_UNIT';
+
+              const unitParticipants = unit.participants ?? [];
+              const orgUnit = orgUnitMap[unit.unitId];
+              const isUnitConfirmed = isConfirmedState(unit.unitState);
+
+              const unitTasks = taskMap.get(`UNIT_${unit.id}`) ?? [];
+              const participantTasks = unitParticipants.flatMap(
+                (p) => taskMap.get(`PARTICIPANT_${p.id}`) ?? []
+              );
+              const mergedTasks = [...unitTasks, ...participantTasks];
+
+              const virtualUnitName = isUnitVirtual
+                ? userUnitMap[unitParticipants[0]?.userId]?.unitName || null
+                : orgUnit?.name || null;
+
+              const virtualUnitId = isUnitVirtual
+                ? userUnitMap[unitParticipants[0]?.userId]?.unitId || null
+                : orgUnit?.id || null;
+
+              const participantsMapped = unitParticipants.map((participant) => {
+                const isDelegated =
+                  participant.assignmentType === 'DELEGATED' &&
+                  participant.delegatedToUserId &&
+                  participant.delegationState === 'ACCEPTED';
+
+                const displayUserId =
+                  isDelegated && participant.delegatedToUserId
+                    ? participant.delegatedToUserId
+                    : participant.userId;
+
+                const receiverUnitId =
+                  userUnitMap[participant.userId]?.unitId ?? null;
+                const receiverUnitName =
+                  userUnitMap[participant.userId]?.unitName ?? null;
+
+                return {
+                  id: participant.id,
+                  userId: displayUserId,
+                  userName: userMap[displayUserId] || displayUserId,
+                  seatNumber: participant.seatNumber,
+                  receiverUnitId,
+                  receiverUnitName,
+                  roomId: participant.roomId,
+                  attendanceAt: participant.attendanceAt,
+                  isConfirmed: isConfirmedState(
+                    participant.participantState
+                  ),
+                  participantState: participant.participantState,
+                  isAssigned:
+                    participant.roomId != null &&
+                    participant.seatNumber != null,
+                  room: participant.roomId
+                    ? {
+                        ...roomMap[participant.roomId],
+                        count:
+                          participantCounts[participant.roomId] || 0,
+                      }
+                    : null,
+                  originalUserId: participant.userId,
+                  originalUserName: userMap[participant.userId],
+                  isDelegated,
+                  tasks: this.mapTasksToDtoV2(
+                    taskMap.get(`PARTICIPANT_${participant.id}`) ?? []
+                  ),
+                  delegateInfo: isDelegated
+                    ? userMap[participant.userId]
+                    : null,
+                };
+              });
+
+              return {
+                id: unit.id,
+                unitId: virtualUnitId,
+                unitName: virtualUnitName,
+                unitState: unit.unitState,
+                isUnitConfirmed,
+                sittingPosition: unitSeatMap.get(unit.id) || [],
+                tasks: this.mapTasksToDtoV2(mergedTasks),
+                participants: participantsMapped,
+              };
+            })
+            // 🔥 GỘP UNIT TRÙNG NHAU THEO unitId
+            .reduce((acc, unit) => {
+              if (!unit.unitId) return acc;
+
+              if (!acc[unit.unitId]) {
+                acc[unit.unitId] = {
+                  ...unit,
+                  participants: [...unit.participants],
+                  tasks: [...unit.tasks],
+                };
+              } else {
+                // Gộp participants
+                acc[unit.unitId].participants.push(...unit.participants);
+
+                // Gộp tasks
+                acc[unit.unitId].tasks.push(...unit.tasks);
+
+                // Gộp sittingPosition
+                acc[unit.unitId].sittingPosition.push(
+                  ...unit.sittingPosition
+                );
+              }
+
+              return acc;
+            }, {})
+        ).map((unit: any) => {
+          // 🔥 remove duplicate user trong cùng unit
+          const userMapUnique = new Map();
+
+          for (const p of unit.participants) {
+            const key = p.originalUserId || p.userId;
+            if (!userMapUnique.has(key)) {
+              userMapUnique.set(key, p);
+            }
+          }
+
+          unit.participants = Array.from(userMapUnique.values());
+
+          const { total, confirmed } = calculateUnitParticipantConfirm(
+            unit.participants
+          );
+
+          unit.participantConfirmSummary = { confirmed, total };
+
+          return unit;
+        }),
+        // Cuộc họp bị hủy hay không
+        isCancelled,
+
+        isShowButtonCreateWork: false,
+        isProcessList: isProcessList,
+        isApproverList: isApproverList,
+        isPrepareList: isPrepareList,
+        isSeatAssignmentList: isSeatAssignmentList,
+        // Người tạo
+        createdBy: meeting.createdBy,
+        // Người trong cùng đơn vị
+        peopleInRoom,
+        // Tasks của các đơn vị  
+        unitRoomTasksMap,
+
+        // Quyền chuẩn bị tài liệu & tham gia cuộc họp của phòng
+        acceptJoin: myUnit?.acceptJoin === true, // Xác nhận tham gia cuộc họp
+        assignParticipants: myUnit?.assignParticipants === true, // Đơn vị đã phân công người tham gia
+        prepareDocuments: myUnit?.prepareDocuments === true, // Chuẩn bị tài liệu
+        hasDocumentUnit,
+
+        // Quyền chuẩn bị tài liệu & tham gia cuộc họp của người
+        acceptJoinuUser: isConfirmedState(myParticipant?.participantState) || false, // Xác nhận tham gia cuộc họp
+        prepareDocumentUser: myParticipant?.prepareDocuments === true, // Chuẩn bị tài liệu
+        hasDocumentUser,
+        // Thời gian cuộc họp
+        meetingTimezone: meeting.timezone, // Timezone
+        meetingDuration: null as any, // Thời gian của cuộc họp
+        meetingStateLabel: null as any, // Trạn thái cuộc họp
+        canAccessMeetingTabs: false,  // Trước 30 ph các tab xuất hiện
+        isMeetingApproved: false, // Cuộc họp đã được phê duyệt chưa
+        // Phân quyền
+        isChairman: false, // Màn của người chủ trì
+        isSecretary: false, // Màn của thư ký
+        isParticipant: false, // Màn của người tham gia
+        isPersonalApprove: false, // Người duyệt cá nhân
+        isParticipantInCurrentUnit: false, // Người tham gia được văn thư gán
+        proceesMeeting: false, // Là văn thư xử lý
+        isCreatedByMe: false, // Là người tạo
+        isSeatAssignment: false,
+        isCompanyUnitDetail: false,
+        attendanceStatus, // Trạng thái điểm danh
+
+        isDelegating: isDelegating, // Người hiện tại có ủy quyền không
+        delegatedToUserId: isDelegating ? myParticipant?.delegatedToUserId : null, // Người hiện tại ủy quyền cho ai
+        delegatedToUserName: isDelegating // tên của người được ủy quyền 
+          ? userMap[myParticipant?.delegatedToUserId]
+          : null,
+
+        participantSummary, // Tổng số người tham gia
+        unitConfirmSummary, // Tổng số phòng tham gia 
+      };
